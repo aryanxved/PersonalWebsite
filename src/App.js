@@ -14,7 +14,7 @@ function App() {
   return (
     <div className="backdroplanding">
       
-    <div style={{color: 'red', backgroundColor: '#1e2124', height: '750px'}}>
+    <div style={{color: 'red', backgroundColor: '#1e2124', height: '100%'}}>
     <CssBaseline /> 
         <div>
             <Card style={{color: 'white', backgroundColor: '#3f50b5'}}>
@@ -25,8 +25,8 @@ function App() {
         </div>
 
         <div align="center" marginTop="50px">
-    <Card style={{color: 'white', backgroundColor: '#282b30', marginLeft: "350px", marginRight: '350px',  marginTop: "50px", height: "70vh"}}>
-    <Card style={{maxWidth: 450, marginTop:"50px", minWidth: 275, color: "white", backgroundColor:"#3f50b5", align: "center"}} align="center">
+    <Card style={{color: 'white', backgroundColor: '#282b30', marginLeft: "20%", marginRight: '20%',  marginTop: "50px", height: "73vh"}}>
+    <Card style={{maxWidth: 650, marginTop:"50px", color: "white", backgroundColor:"#3f50b5", align: "center"}} align="center">
     <CardContent>
         <Typography style={{ fontSize: 25, fontFamily: 'Roboto'}} color="white" gutterBottom>
             Uh Oh! 
