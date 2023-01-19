@@ -24,9 +24,9 @@ function App() {
             </Card>
         </div>
 
-        <div align="center" marginTop="50px">
+        <div align="center" marginTop="50px" marginBottom="50px">
     <Card style={{color: 'white', backgroundColor: '#282b30', marginLeft: "20%", marginRight: '20%',  marginTop: "50px", height: "73vh"}}>
-    <Card style={{maxWidth: 650, marginTop:"50px", color: "white", backgroundColor:"#3f50b5", align: "center"}} align="center">
+    <Card style={{marginLeft: "7%", marginRight: '7%', marginTop:"50px", color: "white", backgroundColor:"#3f50b5", align: "center"}} align="center">
     <CardContent>
         <Typography style={{ fontSize: 25, fontFamily: 'Roboto'}} color="white" gutterBottom>
             Uh Oh! 
@@ -66,6 +66,8 @@ function App() {
     </CardContent>
     </Card>
     </Card>
+    <Card style={{marginLeft: "6%", marginRight: '6%', marginTop:"50px", color: "white", backgroundColor:"#3f50b5", align: "center"}} align="center">
+</Card>
 </div>
     </div>
 </div>
