@@ -9,64 +9,97 @@ import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 import Link from '@material-ui/core/Link';
 import logo from './logo.svg';
 import './App.css';
+import NavBar from './NavBar/NavBar';
+import LandingExp from './Cards/LandingExp';
+import EsteeImg from "../src/Images/Estee.jpg"
+import ShoplogixImg from "../src/Images/Shoplogix.jpeg"
+import ManulifeImg from "../src/Images/Manulife.png"
+import RBCImg from "../src/Images/RBC.png"
+import PreschoolCanadaImg from "../src/Images/PreschoolCanada.jpeg"
+import WaterlooEng from "../src/Images/WaterlooEng.jpg"
 
 function App() {
   return (
     <div className="backdroplanding">
       
-    <div style={{color: 'red', backgroundColor: '#1e2124', height: '100%'}}>
+    <div style={{color: 'red', backgroundColor: 'black'}}>
     <CssBaseline /> 
         <div>
-            <Card style={{color: 'white', backgroundColor: '#3f50b5'}}>
+            <NavBar></NavBar>
+            {/* <Card style={{color: 'white', backgroundColor: '#3f50b5'}}>
             <Typography align="center" variant="h1" component="div" gutterBottom style={{fontFamily: 'Roboto'}}>
             Aryan's Website
             </Typography>
-            </Card>
+            </Card> */}
         </div>
 
         <div align="center" marginTop="50px" marginBottom="50px">
-    <Card style={{color: 'white', backgroundColor: '#282b30', marginLeft: "20%", marginRight: '20%',  marginTop: "50px", height: "73vh"}}>
-    <Card style={{marginLeft: "7%", marginRight: '7%', marginTop:"50px", color: "white", backgroundColor:"#3f50b5", align: "center"}} align="center">
-    <CardContent>
-        <Typography style={{ fontSize: 25, fontFamily: 'Roboto'}} color="white" gutterBottom>
-            Uh Oh! 
-            <br />
-            You're here a little early!
-        </Typography>
-        <Typography style={{ mb: 2 }} color="white">
-        <br />
-            
-            Version 2.0 is coming!
-            <br />
-            This website is currently undergoing major updates!
-            <br />
-            Visit back soon. Check out these few links below.
-        </Typography>
-        <Typography variant="body2">
-        <br />
-        <br />
-        <Button target="_blank" href="https://www.linkedin.com/in/aryanved/">
-          <LinkedInIcon style={{fontSize: 50, color: 'white'}}>
-          Link
-            </LinkedInIcon>
-            </Button>
-            
-            <Button target="_blank" href="https://github.com/aryanxved">
-          <GitHubIcon style={{fontSize: 50, color: 'white'}}>
-          Link
-            </GitHubIcon>
-            </Button>
-            
-            <Button target="_blank" href="https://drive.google.com/file/d/1XKODjDXjbn9yCmgUgGJOlr1Gi5leun6X/view?usp=sharing">
-          <DescriptionOutlinedIcon style={{fontSize: 50, color: 'white'}}>
-          Link
-            </DescriptionOutlinedIcon>
-            </Button>
-        </Typography>
-    </CardContent>
-    </Card>
+    <Card className="background" style={{color: 'white', backgroundColor: '#282b30', marginLeft: "2%", marginRight: '2%',  marginTop: "50px", height: "auto", borderRadius: "100px"}}>
+      <CardContent>
+        <Card style={{position:'relative', marginLeft: "0.5%", marginRight: '0.5%', marginTop:"0.5%", marginBottom: "0.5%", height: "auto", color: "white", backgroundColor:"#131313", align: "center", borderRadius: "70px"}} align="center">
+        <CardContent>
+          <Grid container direction="row" justifyContent="center">
+          <Grid item xs={2}>
+              <div>
+                <Card style={{ backgroundImage: `url(${PreschoolCanadaImg})`, backgroundSize: '100%', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center', marginLeft: "2%", marginRight: '2%', marginTop:"2%", marginBottom: "2%", height: "49vh", width: "auto", color: "black", backgroundColor:"#BF2130", align: "center", borderRadius: "80px"}}>
+                </Card>
+              </div>              
+              </Grid>
+              <Grid item xs={2}>
+              <div>
+                <Card style={{ backgroundImage: `url(${EsteeImg})`, backgroundSize: '100%', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center', marginLeft: "2%", marginRight: '2%', marginTop:"2%", marginBottom: "2%", height: "49vh", width: "auto", color: "black", backgroundColor:"#051C2E", align: "center", borderRadius: "80px"}}>
+                </Card>
+              </div>
+              </Grid>
+              <Grid item xs={2}>
+              <div>
+                <Card style={{ backgroundImage: `url(${ManulifeImg})`, backgroundSize: '100%', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center', marginLeft: "2%", marginRight: '2%', marginTop:"2%", marginBottom: "2%", height: "49vh", width: "auto", color: "black", backgroundColor:"#00A658", align: "center", borderRadius: "80px"}}>
+                </Card>
+              </div>              
+              </Grid>
+              <Grid item xs={2}>
+              <div>
+                <Card style={{ backgroundImage: `url(${RBCImg})`, backgroundSize: '100%', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center', marginLeft: "2%", marginRight: '2%', marginTop:"2%", marginBottom: "2%", height: "49vh", width: "auto", color: "black", backgroundColor:"#0050A4", align: "center", borderRadius: "80px"}}>
+                </Card>
+              </div>              
+              </Grid>
+              <Grid item xs={2}>
+              <div>
+                <Card style={{ backgroundImage: `url(${ShoplogixImg})`, backgroundSize: '100%', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center', marginLeft: "2%", marginRight: '2%', marginTop:"2%", marginBottom: "2%", height: "49vh", width: "auto", color: "black", backgroundColor:"#024F6E", align: "center", borderRadius: "80px"}}>
+                </Card>
+              </div>              
+              </Grid>
+              <Grid item xs={2}>
+              <div>
+                <Card style={{ backgroundImage: `url(${WaterlooEng})`, backgroundSize: '100%', backgroundRepeat: 'no-repeat', backgroundPosition: 'center center', marginLeft: "2%", marginRight: '2%', marginTop:"2%", marginBottom: "2%", height: "49vh", width: "auto", color: "black", backgroundColor:"black", align: "center", borderRadius: "80px"}}>
+                </Card>
+              </div>              
+              </Grid>
+          </Grid>
+        </CardContent>
+        </Card>
+      </CardContent>
     </Card>
     <Card style={{marginLeft: "6%", marginRight: '6%', marginTop:"50px", color: "white", backgroundColor:"#3f50b5", align: "center"}} align="center">
+</Card>
+<Card style={{marginLeft: "4%", marginRight: '4%', marginBottom: "4%", height: "10vh", width: "auto", color: "black", backgroundColor:"#282B30", align: "center", borderRadius: "50px"}}>
+            <Button style={{align: 'center', marginTop: '0.5%'}} target="_blank" href="https://www.linkedin.com/in/aryanved/">
+              <LinkedInIcon style={{fontSize: 50, color: 'white'}}>
+              Link
+                </LinkedInIcon>
+                </Button>
+                
+                <Button style={{align: 'center', marginTop: '0.5%'}} target="_blank" href="https://github.com/aryanxved">
+              <GitHubIcon style={{fontSize: 50, color: 'white'}}>
+              Link
+                </GitHubIcon>
+                </Button>
+                
+                <Button style={{align: 'center', marginTop: '0.5%'}} target="_blank" href="https://drive.google.com/file/d/1QAb-Hu17EHdMdj3fo0lEfFx5Z84hnvUr/view?usp=sharing">
+              <DescriptionOutlinedIcon style={{fontSize: 50, color: 'white'}}>
+              Link
+                </DescriptionOutlinedIcon>
+                </Button>
 </Card>
 </div>
     </div>
