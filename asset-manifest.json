@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/static/css/main.277a8c97.css",
+    "main.css": "/static/css/main.be6ec242.css",
     "main.js": "/static/js/main.cd42a987.js",
     "static/js/787.6568e1bc.chunk.js": "/static/js/787.6568e1bc.chunk.js",
     "static/media/WaterlooEng.jpg": "/static/media/WaterlooEng.f5f53c47318f31fe0bda.jpg",
@@ -9,12 +9,12 @@
     "static/media/PreschoolCanada.jpeg": "/static/media/PreschoolCanada.3b93e2aa1d2a34ea4afa.jpeg",
     "static/media/logo.svg": "/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/index.html",
-    "main.277a8c97.css.map": "/static/css/main.277a8c97.css.map",
+    "main.be6ec242.css.map": "/static/css/main.be6ec242.css.map",
     "main.cd42a987.js.map": "/static/js/main.cd42a987.js.map",
     "787.6568e1bc.chunk.js.map": "/static/js/787.6568e1bc.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.277a8c97.css",
+    "static/css/main.be6ec242.css",
     "static/js/main.cd42a987.js"
   ]
 }
