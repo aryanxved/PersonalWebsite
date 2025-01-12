@@ -36,14 +36,14 @@ function NavBar() {
   };
 
   return (
-    <AppBar position="static" style={{backgroundColor: "#282B30"}}>
+    <AppBar position="sticky" style={{backgroundColor: "#151515", borderRadius: '25px' }}>
       <Container maxWidth="xl">
-        <Toolbar>
+      <Toolbar>
           <Typography
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="#home"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -56,10 +56,11 @@ function NavBar() {
             Aryan Ved
           </Typography>
 
-          {/* <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: "right" }}>
             {pages.map((page) => (
               <Button
                 key={page}
+                href={`#${page}`}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
@@ -87,7 +88,7 @@ function NavBar() {
               onClose={handleCloseUserMenu}
             >
             </Menu>
-          </Box> */}
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>
