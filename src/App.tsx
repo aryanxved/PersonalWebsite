@@ -14,7 +14,6 @@ function App() {
         <Route path="/Experience" element={ <Experience/> } />
         <Route path="/Playground" element={ <Playground/> } />
         <Route path="/Projects" element={ <Projects/> } />
-
       </Routes>
     </div>
   )

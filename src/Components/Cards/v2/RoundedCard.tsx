@@ -1,92 +1,54 @@
-import React from 'react'
-import {Box, Card} from "@material-ui/core/";
-import { ArrowSquareOut, Link } from '@phosphor-icons/react'
+import React from 'react';
+import { Box, Card } from '@material-ui/core';
+import { ArrowSquareOut } from '@phosphor-icons/react';
+import './RoundedCard.css';
 
 interface RoundedCardProps {
-size: string
-color: string
-text?: string
-children?: React.ReactNode;
+  size: string;
+  color: string;
+  text?: string;
+  subtext?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 interface CardTextProps {
   text?: string;
+  subtext?: React.ReactNode;
 }
 
 export const RoundedCard = (props: RoundedCardProps) => {
-let cardType;
-
-switch(props.size) {
-  case 'sm':
-    cardType = (
-      <Card style={{width: '30vw', height: '39vh', marginRight: '1vw', borderRadius: '25px', backgroundColor: props.color, marginBottom: '2vh'}}>
-        <CardText text={props.text}/>
-        {props.children}
-      </Card>
-    );
-    break;
-  case 'md':
-    cardType = (
-      <Card style={{width: '40vw', height: '39vh', marginRight: '1vw', borderRadius: '25px', backgroundColor: props.color, marginBottom: '2vh'}}>
-        <CardText text={props.text}/>
-        {props.children}
-        </Card>
-    );
-    break;
-  case 'lg':
-    cardType = (
-      <Card style={{width: '60vw', height: '39vh', marginRight: '1vw', borderRadius: '25px', backgroundColor: props.color, marginBottom: '2vh'}}>
-        <CardText text={props.text}/>
-        {props.children}
-        </Card>
-    );
-    break;
-    case 'xl':
-      cardType = (
-        <Card style={{width: '80vw', height: '39vh', marginRight: '1vw', borderRadius: '25px', backgroundColor: props.color, marginBottom: '2vh', boxShadow: '0px 0px 10px 0px rgba(255,255,255,0.75)'}}>
-        <CardText text={props.text}/>
-        {props.children}
-        </Card>
-      );
-      break;
-    case 'xxl':
-      cardType = (
-        <Card style={{width: '100vw', height: '80vh', borderRadius: '25px', backgroundColor: '#151515', boxShadow: '0px 0px 10px 0px rgba(255,255,255,0.75)'}}>
-        <CardText text={props.text}/>
-        {props.children}
-        </Card>
-      );
-      break;
-  default:
-    cardType = (
-      <Card style={{width: '100vw', height: '39vh', marginRight: '1vw', borderRadius: '25px', backgroundColor: props.color, marginBottom: '2vh'}}>
-        <CardText text={props.text}/>
-        {props.children}
-        </Card>
-    );
-}
-
-return (
-  <>
-    {cardType}
-  </>
-);
+  const isGlow = props.size === 'xl' ? true : props.size === 'lg' ? true : false;
+  return (
+    <Card
+      className={`rounded-card rounded-card-${props.size} ${isGlow && 'rounded-card-glow'}`}
+      style={{ backgroundColor: props.color }}
+    >
+      <div className="card-content" style={{ backgroundColor: props.color }}>
+      <CardText text={props.text} subtext={props.subtext}/>
+      {props.children}
+      </div>
+    </Card>
+  );
 };
 
-const CardText = ({ text }: CardTextProps) => {
+const CardText = ({ text, subtext }: CardTextProps) => {
   return (
-    <div style={{color: 'white', fontSize: '3.5rem', padding: '1rem', textAlign: 'left', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 'bold'}}>
+    <><div className="card-text">
       <span>{text}</span>
-      {text ? <CardLink/> : ''}
+      {text ? <CardLink /> : ''}
     </div>
+    <div className="card-sub-text">
+        <span>{subtext}</span>
+      </div></>
   );
 };
 
 const CardLink = () => {
   return (
     <span>
-      <ArrowSquareOut size={56} color="#ffffff"/>
+      <ArrowSquareOut size={56} color="#ffffff" />
     </span>
   );
-}
+};
+
 

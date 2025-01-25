@@ -1,45 +1,73 @@
-/* RoundedCard.css */
-
-.rounded-card {
-    border-radius: 25px;
-    margin-bottom: 2vh;
-    margin-right: 1vw;
-    box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.75);
-  }
-  
-  .rounded-card-sm {
-    width: 30vw;
-    height: 39vh;
-  }
-  
-  .rounded-card-md {
-    width: 40vw;
-    height: 39vh;
-  }
-  
-  .rounded-card-lg {
-    width: 60vw;
-    height: 39vh;
-  }
-  
-  .rounded-card-xl {
-    width: 80vw;
-    height: 39vh;
-  }
-  
-  .rounded-card-xxl {
-    width: 100vw;
-    height: 80vh;
-  }
-  
-  .card-text {
-    color: white;
-    font-size: 3.5rem;
-    padding: 1rem;
+.card-text {
+    color: white !important;
+    font-size: 3.5rem !important;
     text-align: left;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    font-weight: bold;
   }
+
+  .card-sub-text {
+    color: gray !important;
+    font-size: 1.5rem !important;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .card-content {
+    padding: 1vw 2vw;
+    z-index: 20;
+    background-color: rgba(21, 21, 21, 1);
+    height: 100%;
+  }
+  
+  .card-content:hover {
+    background-color: rgba(0, 0, 0, 0);
+    transition: ease-in-out 0.5s;
+  }
+
+  .rounded-card {
+    border-radius: 25px !important;
+    margin-bottom: 2vh !important;
+    margin-right: 1vw !important;
+    background: rgba(21, 21, 21, 0.4) !important;
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+  }
+
+  .rounded-card-glow:hover {
+    box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.75) !important;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
+  }
+  
+  .rounded-card-sm {
+    width: 30vw !important;
+    height: 39vh !important;
+  }
+  
+  .rounded-card-md {
+    width: 40vw !important;
+    height: 39vh !important;
+  }
+  
+  /* repeat for other sizes */  
+  
+  .rounded-card-lg {
+    width: 60vw !important;
+    height: 39vh !important;
+  }
+  
+  .rounded-card-xl {
+    width: 80vw !important;
+    height: 39vh !important;
+  }
+  
+  .rounded-card-xxl {
+    width: 100vw !important;
+    height: 80vh !important;
+  }
+
   
