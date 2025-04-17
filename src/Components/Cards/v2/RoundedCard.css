@@ -8,7 +8,7 @@
 
   .card-sub-text {
     color: gray !important;
-    font-size: 1.5rem !important;
+    font-size: 0.9rem !important;
     text-align: left;
     display: flex;
     justify-content: space-between;
@@ -22,8 +22,15 @@
   }
   
   .card-content:hover {
-    background-color: rgba(0, 0, 0, 0);
-    transition: ease-in-out 0.5s;
+    background-color: rgba(0, 0, 0, 0) !important;
+    transition: ease-in-out 0.4s !important;
+  }
+
+  .card-content-nolink {
+    padding: 1vw 2vw;
+    z-index: 20;
+    background-color: rgba(21, 21, 21, 1);
+    height: 100%;
   }
 
   .rounded-card {

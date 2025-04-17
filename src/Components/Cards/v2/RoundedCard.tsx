@@ -8,6 +8,7 @@ interface RoundedCardProps {
   color: string;
   text?: string;
   subtext?: React.ReactNode;
+  link?: string;
   children?: React.ReactNode;
 }
 
@@ -17,15 +18,25 @@ interface CardTextProps {
 }
 
 export const RoundedCard = (props: RoundedCardProps) => {
-  const isGlow = props.size === 'xl' ? true : props.size === 'lg' ? true : false;
+  const isGlow = props.size === 'xl' || props.size === 'lg';
+
   return (
     <Card
       className={`rounded-card rounded-card-${props.size} ${isGlow && 'rounded-card-glow'}`}
       style={{ backgroundColor: props.color }}
     >
-      <div className="card-content" style={{ backgroundColor: props.color }}>
-      <CardText text={props.text} subtext={props.subtext}/>
-      {props.children}
+      <div className={`${props.link ? 'card-content' : 'card-content-nolink'}`} style={{ backgroundColor: props.color }}>
+        {props.link ? (
+          <a style={{ textDecoration: 'none' }} target='_blank' rel='noopener noreferrer' href={props.link}>
+            <CardText text={props.text} subtext={props.subtext} />
+            {props.children}
+          </a>
+        ) : (
+          <>
+            <CardText text={props.text} subtext={props.subtext} />
+            {props.children}
+          </>
+        )}
       </div>
     </Card>
   );

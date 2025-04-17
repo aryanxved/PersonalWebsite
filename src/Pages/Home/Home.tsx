@@ -4,10 +4,28 @@ import './Home.css';
 import NavBar from '../../Components/NavBar/NavBar';
 import { RoundedCard } from '../../Components/Cards/v2/RoundedCard';
 import ResumeCard from '../../Components/Cards/v2/ResumeCard';
+import { Link } from 'react-router-dom';
+
+const technologies = [
+  { imageSrc: require('../../Components/Images/Icons/C_Sharp.svg.png'), text: 'C#' },
+  { imageSrc: require('../../Components/Images/Icons/Javascript.png'), text: 'JavaScript' },
+  { imageSrc: require('../../Components/Images/Icons/Typescript.png'), text: 'TypeScript' },
+  { imageSrc: require('../../Components/Images/Icons/kotlin.png'), text: 'Kotlin' },
+  { imageSrc: require('../../Components/Images/Icons/react.png'), text: 'React' },
+  { imageSrc: require('../../Components/Images/Icons/react.png'), text: 'React Native' },
+];
+
+const playground = [
+  { imageSrc: require('../../Components/Images/Icons/react.png'), text: 'Web Development' },
+  { imageSrc: require('../../Components/Images/Icons/onepoint.png'), text: '1Point Loyalty Platform' },
+  { imageSrc: require('../../Components/Images/Icons/flickpick.png'), text: 'FlickPick Movie App' },
+  { imageSrc: require('../../Components/Images/Icons/figma.png'), text: 'Figma UI Designs' },
+];
+
 
 function Home() {
   const ExperienceWords = ['in FinTech for better Small Businesses 🎉', 'education using Virtual Reality 📚', 'in supply chain using Augmented Reality 🕶️', 'in software to create Smart Factories 🏭'];  
-  const PlaygroundWords = ['develop a loyalty program 🎉', 'make a temprature sensing glove 📚', 'use Computer Aided Design software', 'design user interfaces using Figma 🏭'];  
+  const PlaygroundWords = ['develop a loyalty program 🎉', 'make a temperature sensing glove 📚', 'use Computer Aided Design software', 'design user interfaces using Figma 🏭'];  
 
   return (
       <div className='background' style={{backgroundColor: 'black', width: '100vw', height: '100vh'}}>
@@ -18,11 +36,20 @@ function Home() {
         <Grid container spacing={0} direction='row' justifyContent='space-evenly'>
           <Grid container item xs={8} style={{paddingLeft: '2vw'}}>
             <Grid container item xs={8} direction='row'>
-              <RoundedCard text='EXPERIENCE' subtext={<div>Explore my experiences developing <TypingEffect words={ExperienceWords} /></div>} size='xl' color='#151515'>
+              <RoundedCard text='EXPERIENCE' subtext={<div>Explore my experiences developing <TypingEffect words={ExperienceWords} /></div>} size='xl' color='#151515' link='https://www.linkedin.com/in/aryanved'>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+              {technologies.map((tech, index) => (
+                <TechnologyPill key={index} imageSrc={tech.imageSrc} text={tech.text} />
+              ))}
+            </div>
               </RoundedCard>
             </Grid>
             <Grid container item xs={4} direction='row'>
-            <RoundedCard text='' size='sm' color='#151515'></RoundedCard>
+            <RoundedCard text='' size='sm' color='#454548'>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+              <img src={require('../../Components/Images/Education/headshot.jpg')} style={{ height: '320px', width: '320px' }} alt="UW Logo" />            
+              </div>
+            </RoundedCard>
             </Grid>
             <Grid container item xs={4} direction='row'>
             <RoundedCard text='' size='sm' color='#000000'>
@@ -32,7 +59,13 @@ function Home() {
               </RoundedCard>
             </Grid>
             <Grid container item xs={8} direction='row'>
-            <RoundedCard text='PLAYGROUND' subtext={<div>Check out my projects where I <TypingEffect words={PlaygroundWords} /></div>} size='xl' color='#151515'></RoundedCard>
+            <RoundedCard text='PLAYGROUND' subtext={<div>Check out my projects where I <TypingEffect words={PlaygroundWords} /></div>} size='xl' color='#151515' link='https://www.github.com/aryanxved'>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+              {playground.map((tech, index) => (
+                <TechnologyPill key={index} imageSrc={tech.imageSrc} text={tech.text} />
+              ))}
+            </div>
+            </RoundedCard>
             </Grid>
           </Grid>
           
@@ -44,6 +77,20 @@ function Home() {
       </div>
     );
   }
+
+  interface TechnologyPillProps {
+    imageSrc: string;
+    text: string;
+  }
+  
+  const TechnologyPill = ({ imageSrc, text }: TechnologyPillProps) => {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', backgroundColor: '#1e1e1e', borderRadius: '20px', padding: '10px 20px', marginTop: '20px' }}>
+        <img src={imageSrc} alt={text} style={{ width: '50px', height: '50px', marginRight: '10px', borderRadius: '50%' }} />
+        <span style={{ color: '#ffffff', fontSize: '1rem' }}>{text}</span>
+      </div>
+    );
+  };
 
   const TypingEffect = ({ words }: { words: string[] }) => {
     const [currentWordIndex, setCurrentWordIndex] = useState(0);

@@ -13,10 +13,8 @@ interface ResumeRowProps {
 const ResumeCard = () => {
     return (
        
-            <RoundedCard text='RESUME' size='xxl' color='#151515'>
-            <Link to="/resume">
+            <RoundedCard text='RESUME' size='xxl' color='#151515' link="https://drive.google.com/file/d/1QAb-Hu17EHdMdj3fo0lEfFx5Z84hnvUr/view">
                 <ResumeContent />
-                </Link>
             </RoundedCard>
  
     );
