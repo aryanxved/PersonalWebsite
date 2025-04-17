@@ -38,7 +38,7 @@ const ResumeContent = () => {
 const ResumeRow = ({ logo, company, role }: ResumeRowProps) => {
     return (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Card style={{display: 'flex', flexDirection: 'row', justifyContent: 'left', padding: '10px', alignItems: 'center', backgroundColor: '#363636', color: 'white', width: '90%', borderRadius: '50px', marginBottom: '1vh'}}>
+        <Card style={{display: 'flex', flexDirection: 'row', justifyContent: 'left', padding: '10px', alignItems: 'center', backgroundColor: '#363636', color: 'white', width: '90%', borderRadius: '50px', marginBottom: '1vh', paddingBottom: '1vh', paddingTop: '1vh', paddingLeft: '2vh', paddingRight: '2vh'}}>
             <img src={logo} alt={`${company} logo`} style={{ borderRadius: '50%', width: '50px', height: '50px' }} />
             <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '1rem', textAlign: 'left'}}>
                 <h3 style={{ margin: 0 }}>{company}</h3>

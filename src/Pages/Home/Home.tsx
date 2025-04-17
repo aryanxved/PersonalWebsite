@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Card, CardActions, CardContent, Grid, Button, Select, MenuItem, FormControl, InputLabel, TextField, Radio, FormLabel, RadioGroup, FormControlLabel, FormHelperText, CssBaseline} from "@material-ui/core/";
+import {Card, CardActions, CardContent, Grid, Button, Select, MenuItem, FormControl, InputLabel, TextField, Radio, FormLabel, RadioGroup, FormControlLabel, FormHelperText, CssBaseline, useMediaQuery} from "@material-ui/core/";
 import './Home.css';
 import NavBar from '../../Components/NavBar/NavBar';
 import { RoundedCard } from '../../Components/Cards/v2/RoundedCard';
@@ -24,8 +24,42 @@ const playground = [
 
 
 function Home() {
+  const isMobile = useMediaQuery('(max-width: 1040px)');
   const ExperienceWords = ['in FinTech for better Small Businesses 🎉', 'education using Virtual Reality 📚', 'in supply chain using Augmented Reality 🕶️', 'in software to create Smart Factories 🏭'];  
   const PlaygroundWords = ['develop a loyalty program 🎉', 'make a temperature sensing glove 📚', 'use Computer Aided Design software', 'design user interfaces using Figma 🏭'];  
+
+  if (isMobile) {
+    // Render only the ResumeCard on mobile
+    return (
+      <div className='background' style={{ backgroundColor: 'black', width: '100vw', height: '180vh' }}>
+        <Grid container justifyContent="center" style={{ padding: '50px'}}>
+          <ResumeCard />
+          
+              <RoundedCard text='EXPERIENCE' subtext={<div>Explore my experiences developing <TypingEffect words={ExperienceWords} /></div>} size='xl' color='#151515' link='https://www.linkedin.com/in/aryanved'>
+              <div style={{ display: 'grid',     gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+ }}>
+              {technologies.map((tech, index) => (
+                <TechnologyPill key={index} imageSrc={tech.imageSrc} text={tech.text} />
+              ))}
+            </div>
+              </RoundedCard>
+              <RoundedCard text='PLAYGROUND' subtext={<div>Check out my projects where I <TypingEffect words={PlaygroundWords} /></div>} size='xl' color='#151515' link='https://www.github.com/aryanxved'>
+            <div
+  style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+    gap: '5px',
+  }}
+>
+  {playground.map((tech, index) => (
+    <TechnologyPill key={index} imageSrc={tech.imageSrc} text={tech.text} />
+  ))}
+</div>
+            </RoundedCard>
+                    </Grid>
+      </div>
+    );
+  }
 
   return (
       <div className='background' style={{backgroundColor: 'black', width: '100vw', height: '100vh'}}>
@@ -60,11 +94,17 @@ function Home() {
             </Grid>
             <Grid container item xs={8} direction='row'>
             <RoundedCard text='PLAYGROUND' subtext={<div>Check out my projects where I <TypingEffect words={PlaygroundWords} /></div>} size='xl' color='#151515' link='https://www.github.com/aryanxved'>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
-              {playground.map((tech, index) => (
-                <TechnologyPill key={index} imageSrc={tech.imageSrc} text={tech.text} />
-              ))}
-            </div>
+            <div
+  style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+    gap: '10px',
+  }}
+>
+  {playground.map((tech, index) => (
+    <TechnologyPill key={index} imageSrc={tech.imageSrc} text={tech.text} />
+  ))}
+</div>
             </RoundedCard>
             </Grid>
           </Grid>

@@ -18,7 +18,7 @@ interface CardTextProps {
 }
 
 export const RoundedCard = (props: RoundedCardProps) => {
-  const isGlow = props.size === 'xl' || props.size === 'lg';
+  const isGlow = props.size === 'xxl' || props.size === 'xl' || props.size === 'lg';
 
   return (
     <Card
