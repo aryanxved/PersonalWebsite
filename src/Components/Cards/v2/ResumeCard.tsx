@@ -23,14 +23,14 @@ export default ResumeCard;
 
 const ResumeContent = () => {
     return (
-    <div style={{color: 'white'}}>
+    <div className="resume-content">
+        <ResumeRow logo={require("../../Images/Experience/Equitable.png")} company="Equitable Life of Canada" role="Intermediate Business Systems Analyst" />
         <ResumeRow logo={require("../../Images/Experience/Relay.jpeg")} company="Relay Financial Technologies" role="Full Stack Engineer Intern" />
         <ResumeRow logo={require("../../Images/Experience/Shoplogix.jpeg")} company="Shoplogix" role="Software Developer Intern" />
         <ResumeRow logo={require("../../Images/Experience/RBC.png")} company="Royal Bank of Canada" role="Application Developer Intern" />
         <ResumeRow logo={require("../../Images/Experience/Manulife.png")} company="Manulife Financial Corporation" role="Software Developer Intern" />
         <ResumeRow logo={require("../../Images/Experience/Estee.jpg")} company="The Estee Lauder Companies" role="Augmented Reality Developer Intern" />
         <ResumeRow logo={require("../../Images/Experience/PreschoolCanada.jpeg")} company="Eh to Zed Preschool Canada" role="Junior Virtual Reality Designer Intern" />
-        <FloatingFooter />
     </div>
     )
 }
@@ -38,7 +38,7 @@ const ResumeContent = () => {
 const ResumeRow = ({ logo, company, role }: ResumeRowProps) => {
     return (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Card style={{display: 'flex', flexDirection: 'row', justifyContent: 'left', padding: '10px', alignItems: 'center', backgroundColor: '#1e1e1e', color: 'white', width: '90%', borderRadius: '20px', marginBottom: '1vh', paddingBottom: '1vh', paddingTop: '1vh', paddingLeft: '2vh', paddingRight: '2vh'}}>
+        <Card className="resume-row-card" style={{display: 'flex', flexDirection: 'row', justifyContent: 'left', padding: '10px', alignItems: 'center', width: '90%', borderRadius: '20px', marginBottom: '1vh', paddingBottom: '1vh', paddingTop: '1vh', paddingLeft: '2vh', paddingRight: '2vh'}}>
             <img src={logo} alt={`${company} logo`} style={{ borderRadius: '50%', width: '50px', height: '50px' }} />
             <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '1rem', textAlign: 'left'}}>
                 <h3 style={{ margin: 0 }}>{company}</h3>
