@@ -117,7 +117,7 @@
   color: #fff !important;
 }
 .light-theme .rounded-card {
-  background: rgba(255,255,255,0.65) !important;
+  background: rgba(255,255,255,0.15) !important;
   color: #151515 !important;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,0.06);
 }
@@ -132,9 +132,9 @@
 
 .light-theme .card-content:hover,
 .light-theme .card-content-nolink:hover {
-  background-color: rgba(255,255,255,0.35) !important;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background-color: rgba(255, 255, 255, 0.00) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   transition: ease-in-out 0.4s !important;
 }
 
