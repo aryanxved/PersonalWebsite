@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/static/css/main.5b56a309.css",
+    "main.js": "/static/js/main.8d5ff54a.js",
+    "static/js/787.6568e1bc.chunk.js": "/static/js/787.6568e1bc.chunk.js",
+    "static/media/headshot.jpg": "/static/media/headshot.d734203bdd5f26a02133.jpg",
+    "static/media/Javascript.png": "/static/media/Javascript.abcbb0720fcc8e93be48.png",
+    "static/media/C_Sharp.svg.png": "/static/media/C_Sharp.svg.a7a2a4ad568eb49f659d.png",
+    "static/media/Typescript.png": "/static/media/Typescript.f73f71d1ed518949433e.png",
+    "static/media/Equitable.png": "/static/media/Equitable.39da296a8e373650df30.png",
+    "static/media/figma.png": "/static/media/figma.ccc9ed7007d066a5a48e.png",
+    "static/media/Estee.jpg": "/static/media/Estee.c41d444b5a65d674a38b.jpg",
+    "static/media/flickpick.png": "/static/media/flickpick.29ba693ddca8a9ec829c.png",
+    "static/media/Relay.jpeg": "/static/media/Relay.cee8fcf6e0933dc2f259.jpeg",
+    "static/media/Manulife.png": "/static/media/Manulife.accd6da6d2ab19609e14.png",
+    "static/media/PreschoolCanada.jpeg": "/static/media/PreschoolCanada.3b93e2aa1d2a34ea4afa.jpeg",
+    "static/media/react.png": "/static/media/react.e627d8b7feb21a57995b.png",
+    "index.html": "/index.html",
+    "main.5b56a309.css.map": "/static/css/main.5b56a309.css.map",
+    "main.8d5ff54a.js.map": "/static/js/main.8d5ff54a.js.map",
+    "787.6568e1bc.chunk.js.map": "/static/js/787.6568e1bc.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5b56a309.css",
+    "static/js/main.8d5ff54a.js"
+  ]
+}
