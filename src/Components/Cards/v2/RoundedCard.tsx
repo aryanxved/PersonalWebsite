@@ -1,65 +1,49 @@
-import React from 'react';
-import { Box, Card } from '@material-ui/core';
+import { ReactNode, useId } from 'react';
 import { ArrowSquareOut } from '@phosphor-icons/react';
 import './RoundedCard.css';
 
 interface RoundedCardProps {
-  size: string;
-  color: string;
-  text?: string;
-  subtext?: React.ReactNode;
-  link?: string;
-  children?: React.ReactNode;
+  title?: string;
+  subtext?: ReactNode;
+  /** External link shown as its own icon button, separate from anything clickable inside the card. */
+  externalLink?: { url: string; label: string };
+  glow?: boolean;
+  className?: string;
+  /** Accessible name for cards without a visible title (e.g. the photo cards). */
+  ariaLabel?: string;
+  children?: ReactNode;
 }
 
-interface CardTextProps {
-  text?: string;
-  subtext?: React.ReactNode;
-}
-
-export const RoundedCard = (props: RoundedCardProps) => {
-  const isGlow = props.size === 'xxl' || props.size === 'xl' || props.size === 'lg';
+export const RoundedCard = ({ title, subtext, externalLink, glow = false, className = '', ariaLabel, children }: RoundedCardProps) => {
+  const titleId = useId();
 
   return (
-    <Card
-      className={`rounded-card rounded-card-${props.size} ${isGlow && 'rounded-card-glow'}`}
-      style={{ backgroundColor: props.color }}
+    <section
+      className={`rounded-card${glow ? ' rounded-card-glow' : ''} ${className}`}
+      aria-labelledby={title ? titleId : undefined}
+      aria-label={title ? undefined : ariaLabel}
     >
-      <div className={`${props.link ? 'card-content' : 'card-content-nolink'}`} style={{ backgroundColor: props.color }}>
-        {props.link ? (
-          <a style={{ textDecoration: 'none' }} target='_blank' rel='noopener noreferrer' href={props.link}>
-            <CardText text={props.text} subtext={props.subtext} />
-            {props.children}
-          </a>
-        ) : (
-          <>
-            <CardText text={props.text} subtext={props.subtext} />
-            {props.children}
-          </>
+      <div className="card-content">
+        {(title || externalLink) && (
+          <div className="card-header">
+            {title && <h2 id={titleId} className="card-text">{title}</h2>}
+            {externalLink && (
+              <a
+                className="card-external-link"
+                href={externalLink.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`${externalLink.label} (opens in a new tab)`}
+                title={externalLink.label}
+              >
+                <ArrowSquareOut size={56} aria-hidden />
+              </a>
+            )}
+          </div>
         )}
+        {subtext && <div className="card-sub-text">{subtext}</div>}
+        {children}
       </div>
-    </Card>
+    </section>
   );
 };
-
-const CardText = ({ text, subtext }: CardTextProps) => {
-  return (
-    <><div className="card-text">
-      <span>{text}</span>
-      {text ? <CardLink /> : ''}
-    </div>
-    <div className="card-sub-text">
-        <span>{subtext}</span>
-      </div></>
-  );
-};
-
-const CardLink = () => {
-  return (
-    <span>
-      <ArrowSquareOut size={56} color="#ffffff" />
-    </span>
-  );
-};
-
-

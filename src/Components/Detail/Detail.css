@@ -1,0 +1,179 @@
+/* Two classes so these win over MUI's injected styles. */
+.MuiDialog-root .detail-paper {
+  background: var(--dialog-bg);
+  background-image: none;
+  color: var(--card-fg);
+  border-radius: 25px;
+  border: 1.5px solid var(--row-border);
+  text-align: left;
+}
+.MuiDialog-root .detail-paper.MuiDialog-paperFullScreen {
+  border-radius: 0;
+  border: 0;
+}
+.MuiDialog-root .detail-backdrop {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.detail-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid var(--row-border);
+}
+
+.detail-heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+.detail-heading h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  line-height: 1.25;
+  color: var(--card-title);
+}
+.detail-heading p {
+  margin: 4px 0 0;
+}
+.detail-logo {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.detail-meta {
+  color: var(--card-subtext);
+}
+
+.detail-icon-button {
+  display: inline-flex;
+  flex-shrink: 0;
+  padding: 8px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--card-title);
+  cursor: pointer;
+}
+.detail-icon-button:hover {
+  background: var(--pill-bg);
+}
+
+.detail-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 8px 24px 24px;
+  line-height: 1.6;
+}
+.detail-section h3 {
+  margin: 20px 0 6px;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--card-subtext);
+}
+.detail-section p {
+  margin: 0;
+}
+.detail-list {
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+.detail-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.detail-chips li {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--pill-bg);
+  color: var(--pill-fg);
+  font-size: 0.9rem;
+}
+
+.detail-screenshots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.detail-screenshots img {
+  width: 100%;
+  border-radius: 12px;
+}
+
+.detail-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.detail-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent);
+}
+
+.detail-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--row-border);
+}
+.detail-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 48%;
+  padding: 8px 12px;
+  border-radius: 14px;
+  color: var(--card-fg);
+  text-decoration: none;
+}
+.detail-nav-link:hover {
+  background: var(--pill-bg);
+}
+.detail-nav-next {
+  margin-left: auto;
+  text-align: right;
+}
+.detail-nav-hint {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--card-subtext);
+}
+
+.detail-icon-button:focus-visible,
+.detail-nav-link:focus-visible,
+.detail-links a:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .detail-top,
+  .detail-body,
+  .detail-nav {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .detail-logo {
+    width: 48px;
+    height: 48px;
+  }
+}

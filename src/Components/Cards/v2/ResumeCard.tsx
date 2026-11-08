@@ -1,51 +1,42 @@
-import { Card } from "@material-ui/core";
-import { RoundedCard } from "./RoundedCard"
-import FloatingFooter from "../v1/FloatingFooter/FloatingFooter";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { Plus } from '@phosphor-icons/react';
+import { RoundedCard } from './RoundedCard';
+import { experience } from '../../../data/experience';
+import { links } from '../../../data/links';
+import { isTodo } from '../../../data/types';
+import { skillMatchClass } from '../../skillFilter';
 
-
-interface ResumeRowProps {
-    logo: string,
-    company: string,
-    role: string
+interface ResumeCardProps {
+  className?: string;
+  activeSkill: string | null;
 }
 
-const ResumeCard = () => {
-    return (
-       
-            <RoundedCard text='RESUME' size='xxl' color='#151515' link="https://drive.google.com/file/d/1QAb-Hu17EHdMdj3fo0lEfFx5Z84hnvUr/view">
-                <ResumeContent />
-            </RoundedCard>
- 
-    );
-}
+const ResumeCard = ({ className, activeSkill }: ResumeCardProps) => {
+  const location = useLocation();
+
+  return (
+    <RoundedCard title="RESUME" glow className={className} externalLink={{ url: links.resume, label: 'Resume' }}>
+      <ul className="resume-content">
+        {experience.map((job) => (
+          <li key={job.id}>
+            <Link
+              to={`/experience/${job.id}`}
+              state={{ backgroundLocation: location }}
+              className={`resume-row is-clickable${skillMatchClass(job.stack, activeSkill)}`}
+            >
+              <img src={job.logo} alt="" className="resume-row-logo" />
+              <span className="resume-row-text">
+                <span className="resume-row-company">{job.company}</span>
+                <span className="resume-row-role">{job.role}</span>
+                <span className={`resume-row-summary${isTodo(job.summary) ? ' todo-text' : ''}`}>{job.summary}</span>
+              </span>
+              <Plus size={20} weight="bold" className="row-affordance" aria-hidden />
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </RoundedCard>
+  );
+};
+
 export default ResumeCard;
-
-const ResumeContent = () => {
-    return (
-    <div className="resume-content">
-        <ResumeRow logo={require("../../Images/Experience/Equitable.png")} company="Equitable Life of Canada" role="Intermediate Business Systems Analyst" />
-        <ResumeRow logo={require("../../Images/Experience/Relay.jpeg")} company="Relay Financial Technologies" role="Full Stack Engineer Intern" />
-        <ResumeRow logo={require("../../Images/Experience/Shoplogix.jpeg")} company="Shoplogix" role="Software Developer Intern" />
-        <ResumeRow logo={require("../../Images/Experience/RBC.png")} company="Royal Bank of Canada" role="Application Developer Intern" />
-        <ResumeRow logo={require("../../Images/Experience/Manulife.png")} company="Manulife Financial Corporation" role="Software Developer Intern" />
-        <ResumeRow logo={require("../../Images/Experience/Estee.jpg")} company="The Estee Lauder Companies" role="Augmented Reality Developer Intern" />
-        <ResumeRow logo={require("../../Images/Experience/PreschoolCanada.jpeg")} company="Eh to Zed Preschool Canada" role="Junior Virtual Reality Designer Intern" />
-    </div>
-    )
-}
-
-const ResumeRow = ({ logo, company, role }: ResumeRowProps) => {
-    return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <Card className="resume-row-card" style={{display: 'flex', flexDirection: 'row', justifyContent: 'left', padding: '10px', alignItems: 'center', width: '90%', borderRadius: '20px', marginBottom: '1vh', paddingBottom: '1vh', paddingTop: '1vh', paddingLeft: '2vh', paddingRight: '2vh'}}>
-            <img src={logo} alt={`${company} logo`} style={{ borderRadius: '50%', width: '50px', height: '50px' }} />
-            <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '1rem', textAlign: 'left'}}>
-                <h3 style={{ margin: 0 }}>{company}</h3>
-                <p style={{ margin: 0 }}>{role}</p>
-            </div>
-        </Card>
-    </div>
-
-    )
-}
