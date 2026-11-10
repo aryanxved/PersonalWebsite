@@ -1,3 +1,6 @@
+import type { Icon as PhosphorIcon } from '@phosphor-icons/react';
+import type { BrandIcon } from './brandIcons';
+
 export interface Experience {
   /** URL slug, used in /experience/:id */
   id: string;
@@ -35,9 +38,36 @@ export interface Project {
   links: ProjectLink[];
 }
 
+export interface Education {
+  /** URL slug, for a future /education/:id popup. */
+  id: string;
+  /** Full official name (used for alt text, screen readers and the future popup). */
+  school: string;
+  /** Short name that fits on one line in the pill. */
+  shortName: string;
+  program: string;
+  start: string;
+  end: string;
+  /** Shown in the popup: coursework, awards, clubs, etc. */
+  highlights: string[];
+  /** Square logo; without one, `monogram` is shown on a colored badge. */
+  logo?: string;
+  /** Badge fill behind the logo, for logos that are not square (defaults to white). */
+  logoBackground?: string;
+  monogram?: { text: string; color: string; background: string };
+  /** Shows an "Incoming" tag. */
+  incoming?: boolean;
+}
+
 export interface Technology {
   name: string;
-  icon: string;
+  /** One of: a logo image file, a Simple Icons brand logo, or (when no brand
+   *  logo is available) a Phosphor symbol. */
+  image?: string;
+  brand?: BrandIcon;
+  glyph?: PhosphorIcon;
+  /** Stack entries this skill covers (defaults to just `name`). */
+  matches?: string[];
 }
 
 /** Placeholder marker. Search the codebase for "TODO:" to find content to fill in. */

@@ -5,6 +5,8 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { ArrowSquareOut, CaretLeft, CaretRight, X } from '@phosphor-icons/react';
 import { experience } from '../../data/experience';
 import { projects } from '../../data/projects';
+import { education } from '../../data/education';
+import SchoolBadge from '../SchoolBadge';
 import { isTodo } from '../../data/types';
 import type { DetailLocationState } from '../../App';
 import './Detail.css';
@@ -218,6 +220,43 @@ export const ProjectDialog = () => (
           ) : (
             <Text as="p" value="TODO: add links (GitHub, demo, App Store…)" />
           )}
+        </Section>
+      </>
+    )}
+  />
+);
+
+export const EducationDialog = () => (
+  <DetailShell
+    items={education}
+    basePath="/education"
+    label={(school) => school.shortName}
+    title={(school) => school.school}
+    header={(school, titleId) => (
+      <div className="detail-heading">
+        <SchoolBadge school={school} className="detail-school-badge" />
+        <div>
+          <h2 id={titleId}>{school.school}</h2>
+          <p className="detail-meta">
+            {school.incoming && <span className="education-tag">Incoming</span>}{' '}
+            <Text value={school.start} /> – <Text value={school.end} />
+          </p>
+        </div>
+      </div>
+    )}
+    body={(school) => (
+      <>
+        <Section heading="Program">
+          <Text as="p" value={school.program} />
+        </Section>
+        <Section heading="Highlights">
+          <ul className="detail-list">
+            {school.highlights.map((highlight) => (
+              <li key={highlight}>
+                <Text value={highlight} />
+              </li>
+            ))}
+          </ul>
         </Section>
       </>
     )}

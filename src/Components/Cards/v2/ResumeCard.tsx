@@ -3,7 +3,6 @@ import { Plus } from '@phosphor-icons/react';
 import { RoundedCard } from './RoundedCard';
 import { experience } from '../../../data/experience';
 import { links } from '../../../data/links';
-import { isTodo } from '../../../data/types';
 import { skillMatchClass } from '../../skillFilter';
 
 interface ResumeCardProps {
@@ -28,9 +27,8 @@ const ResumeCard = ({ className, activeSkill }: ResumeCardProps) => {
               <span className="resume-row-text">
                 <span className="resume-row-company">{job.company}</span>
                 <span className="resume-row-role">{job.role}</span>
-                <span className={`resume-row-summary${isTodo(job.summary) ? ' todo-text' : ''}`}>{job.summary}</span>
               </span>
-              <Plus size={20} weight="bold" className="row-affordance" aria-hidden />
+              <Plus size={18} className="row-affordance" aria-hidden />
             </Link>
           </li>
         ))}

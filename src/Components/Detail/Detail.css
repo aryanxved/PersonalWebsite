@@ -177,3 +177,20 @@
     height: 48px;
   }
 }
+
+/* School logos in the education popup. */
+.detail-heading .detail-school-badge {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  flex-shrink: 0;
+}
+.detail-meta .education-tag {
+  vertical-align: middle;
+}
+@media (max-width: 640px) {
+  .detail-heading .detail-school-badge {
+    width: 48px;
+    height: 48px;
+  }
+}

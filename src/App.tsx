@@ -5,7 +5,7 @@ import About from './Pages/About/About';
 import Playground from './Pages/Playground/Playground';
 import Projects from './Pages/Projects/Projects';
 import { ThemeProvider } from './theme/ThemeContext';
-import { ExperienceDialog, ProjectDialog } from './Components/Detail/DetailDialog';
+import { EducationDialog, ExperienceDialog, ProjectDialog } from './Components/Detail/DetailDialog';
 
 export interface DetailLocationState {
   /** The page the detail was opened from; it stays rendered under the dialog. */
@@ -24,6 +24,7 @@ function AppRoutes() {
         {/* Direct visits to a detail URL render Home underneath the dialog. */}
         <Route path="/experience/:id" element={<Home />} />
         <Route path="/projects/:id" element={<Home />} />
+        <Route path="/education/:id" element={<Home />} />
         <Route path="/About" element={<About />} />
         <Route path="/Experience" element={<Experience />} />
         <Route path="/Playground" element={<Playground />} />
@@ -34,6 +35,7 @@ function AppRoutes() {
       <Routes>
         <Route path="/experience/:id" element={<ExperienceDialog />} />
         <Route path="/projects/:id" element={<ProjectDialog />} />
+        <Route path="/education/:id" element={<EducationDialog />} />
         <Route path="*" element={null} />
       </Routes>
     </>

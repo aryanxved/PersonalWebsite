@@ -1,5 +1,5 @@
 import { ReactNode, useId } from 'react';
-import { ArrowSquareOut } from '@phosphor-icons/react';
+import { ArrowUpRight } from '@phosphor-icons/react';
 import './RoundedCard.css';
 
 interface RoundedCardProps {
@@ -36,7 +36,7 @@ export const RoundedCard = ({ title, subtext, externalLink, glow = false, classN
                 aria-label={`${externalLink.label} (opens in a new tab)`}
                 title={externalLink.label}
               >
-                <ArrowSquareOut size={56} aria-hidden />
+                <ArrowUpRight size={22} weight="bold" aria-hidden />
               </a>
             )}
           </div>

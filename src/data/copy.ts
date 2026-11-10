@@ -2,10 +2,9 @@
 
 export const pitch = {
   name: 'Aryan Ved',
-  role: 'TODO: your role, e.g. "Software engineer building fintech and mobile products"',
-  blurb: 'TODO: two sentences on what you do and what you are looking for',
-  location: 'TODO: city, province',
-  availability: 'TODO: availability, e.g. "Open to full-time roles from May 2027"',
+  role: 'Intermediate Business Systems Analyst',
+  location: 'TODO: city',
+  availability: 'TODO: availability',
 };
 
 export const experiencePhrases = [

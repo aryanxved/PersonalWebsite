@@ -1,5 +1,4 @@
 html, body {
-  width: 100vw;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -9,160 +8,479 @@ html, body {
   text-align: center;
 }
 
+/* ---------- Page ---------- */
+
 .background {
-  background: linear-gradient(-70deg,#460C88, #177fcf, #0050A3, #024F6E, #BE2130);
+  --nav-space: 84px;
+  --gap: 16px;
+  background: linear-gradient(-70deg, #460C88, #177fcf, #0050A3, #024F6E, #BE2130);
   background-size: 400% 400%;
   animation: gradient 15s ease infinite;
   min-height: 100vh;
-  width: 100vw;
+  min-height: 100dvh;
   box-sizing: border-box;
-  padding-top: 90px;
-  margin: 0 !important;
-  left: 0;
-  right: 0;
+  padding-top: var(--nav-space);
 }
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .background {
+    animation: none;
+  }
+}
+
+/* ---------- Bento grid ---------- */
+
+.home-grid {
+  display: grid;
+  gap: var(--gap);
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 0 24px 24px;
+  box-sizing: border-box;
+  grid-template-columns: 1fr 1fr 1fr 1.45fr;
+  grid-template-areas:
+    "experience experience headshot   resume"
+    "crest      playground playground resume";
+}
+
+.area-experience { grid-area: experience; }
+.area-playground { grid-area: playground; }
+.area-headshot   { grid-area: headshot; }
+.area-crest      { grid-area: crest; }
+.area-resume     { grid-area: resume; }
+
+/* Desktop and tablet: the whole grid fits in one screen, no page scroll. */
+@media (min-width: 1041px) and (min-height: 620px) {
+  .background {
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .home-grid {
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 0;
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+/* Phone: one column of tiles; the page scrolls. */
+@media (max-width: 1040px) {
+  .background {
+    --nav-space: 72px;
+  }
+  .home-grid {
+    padding: 0 16px 32px;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "headshot"
+      "resume"
+      "experience"
+      "playground"
+      "crest";
+  }
+}
+
+/* ---------- Pills (tech + projects) ---------- */
 
 .technology-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 10px;
-  align-items: start;
-  margin: 16px 0 0;
-  padding: 0 0 8px;
+  margin: 0;
+  padding: 0;
   list-style: none;
   min-width: 0;
-  height: auto;
-  overflow-y: visible;
+}
+.project-grid {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+@media (max-width: 1340px) {
+  .project-grid {
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  }
+}
+.technology-grid > li {
+  min-width: 0;
 }
 
 .technology-pill {
   display: flex;
   align-items: center;
-  background-color: var(--pill-bg);
-  color: var(--pill-fg);
-  border-radius: 20px;
-  padding: 10px 16px;
+  gap: 12px;
   box-sizing: border-box;
   width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: clamp(6px, 1.1vh, 10px) 16px clamp(6px, 1.1vh, 10px) clamp(6px, 1.1vh, 10px);
   border: 0;
+  border-radius: 20px;
+  background-color: var(--pill-bg);
+  color: var(--pill-fg);
+  box-shadow: inset 0 0 0 1px var(--hairline);
   font: inherit;
+  font-size: clamp(0.88rem, 1.7vh, 1.05rem);
+  font-weight: 500;
   text-align: left;
   text-decoration: none;
-  min-width: 0;
-  flex-shrink: 1;
-  max-width: 100%;
-  height: auto;
-  overflow-y: visible;
 }
-
-.technology-pill img {
-  width: 48px;
-  height: 48px;
-  margin-right: 12px;
+.technology-pill img,
+.pill-icon-fallback {
+  width: clamp(32px, 5.2vh, 48px);
+  height: clamp(32px, 5.2vh, 48px);
+  flex-shrink: 0;
   border-radius: 50%;
   object-fit: cover;
 }
-
+.pill-icon-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--hairline);
+}
 .technology-pill span {
-  color: var(--pill-fg);
-  font-size: 1rem;
-  overflow-wrap: break-word;
   min-width: 0;
-  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+/* ---------- Clickable affordances ---------- */
+
+.is-clickable {
+  cursor: pointer;
+  color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, opacity 0.2s ease;
+}
+.is-clickable:hover {
+  transform: translateY(-1px);
+  background-color: var(--pill-hover-bg);
+}
+.is-clickable:active {
+  transform: scale(0.98);
+}
+.is-clickable:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.row-affordance {
+  flex-shrink: 0;
+  margin-left: auto;
+  opacity: 0.35;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.is-clickable:hover .row-affordance,
+.is-clickable:focus-visible .row-affordance {
+  opacity: 1;
+  transform: rotate(90deg);
+}
+
+/* Skill filter: the accent ring is the shared "selected" language. */
+.technology-pill[aria-pressed='true'],
+.is-match {
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+.is-dimmed {
+  opacity: 0.3;
+}
+
+.skill-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--card-subtext);
+}
+.skill-status.is-active {
+  margin-top: 8px;
+}
+.skill-status-clear {
+  font: inherit;
+  color: var(--card-title);
+  background: var(--pill-bg);
+  border: 0;
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  border-radius: 999px;
+  padding: 2px 12px;
+  cursor: pointer;
+}
+.skill-status-clear:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ---------- Resume rows ---------- */
+
+.resume-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--row-fg);
+}
+.resume-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: clamp(6px, 1vh, 10px) 16px clamp(6px, 1vh, 10px) clamp(8px, 1vh, 12px);
+  border-radius: 20px;
+  background: var(--pill-bg);
+  color: var(--row-fg);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  text-decoration: none;
+}
+.resume-row-logo {
+  width: clamp(32px, 5.2vh, 50px);
+  height: clamp(32px, 5.2vh, 50px);
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+.resume-row-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  text-align: left;
+  line-height: 1.3;
+}
+.resume-row-company {
+  font-size: clamp(0.88rem, 1.75vh, 1.1rem);
+  font-weight: 600;
+}
+.resume-row-role {
+  font-size: clamp(0.76rem, 1.5vh, 0.95rem);
+  color: var(--card-subtext);
+}
+
+/* ---------- Hero (headshot + intro) ---------- */
+
+/* The photo tile is a size container: the overlay scales with the tile
+   (cqi = % of its width, cqh = % of its height), like the other tiles'
+   content scales with theirs, so it never covers the face on small tiles. */
+.hero-card {
+  container-type: size;
+}
+.hero-card .profile-picture-full {
+  object-position: center 22%;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: clamp(24px, 14cqh, 48px) clamp(12px, 7cqi, 22px) clamp(10px, 5.5cqi, 18px);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.5) 55%, transparent);
+  color: #fff;
+  text-align: left;
+}
+.hero-name {
+  margin: 0;
+  font-size: clamp(1.05rem, min(10cqi, 7.5cqh), 2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.hero-role {
+  margin: 0.25em 0 0;
+  font-size: clamp(0.68rem, min(4.6cqi, 3.6cqh), 0.95rem);
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.85);
+  /* At most two lines, never pushing the overlay up over the face. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.hero-email {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-top: clamp(6px, 3.5cqi, 10px);
+  padding: 0.45em 1.1em;
+  border-radius: 999px;
+  background: #fff;
+  color: #000;
+  font-size: clamp(0.68rem, min(4.4cqi, 3.4cqh), 0.85rem);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+}
+a.hero-email:hover {
+  transform: translateY(-1px);
+}
+a.hero-email:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+/* The overlay is always dark, so placeholders use the dark-theme color. */
+.hero-overlay .todo-text.todo-text {
+  color: #ffb74d;
+}
+.hero-email.todo-text {
+  background: rgba(255, 255, 255, 0.12);
 }
 
-@media (max-width: 600px) {
-  .background {
-    padding: 40px 0 0 0;
-    padding-top: 60px;
-  }
+/* ---------- Education ---------- */
 
-  .technology-pill {
-    padding: 10px;
+.education-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* Same pill as the resume rows. */
+.education-item {
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-sizing: border-box;
+  padding: clamp(6px, 1vh, 10px) 16px clamp(6px, 1vh, 10px) clamp(8px, 1vh, 12px);
+  border-radius: 20px;
+  background: var(--pill-bg);
+  color: var(--row-fg);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+}
+.education-badge {
+  width: clamp(32px, 5.2vh, 50px);
+  height: clamp(32px, 5.2vh, 50px);
+  flex-shrink: 0;
+  border-radius: 12px;
+  object-fit: contain;
+  background: #fff;
+}
+.education-monogram {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: clamp(0.85rem, 1.8vh, 1.1rem);
+  letter-spacing: 0.02em;
+}
+.education-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+  container-type: inline-size;
+  text-align: left;
+  line-height: 1.3;
+}
+.education-school {
+  /* Full size, unless this name needs a smaller size to fit on one line
+     (about 0.55em per character at this weight). */
+  font-size: min(clamp(0.88rem, 1.75vh, 1.1rem), calc(100cqi / (var(--chars, 12) * 0.55)));
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.education-years {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.education-tag {
+  flex-shrink: 0;
+  padding: 1px 8px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1.5px var(--accent);
+  color: var(--accent);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.education-years {
+  font-size: clamp(0.72rem, 1.45vh, 0.9rem);
+  color: var(--card-subtext);
+}
+@media (min-width: 1041px) {
+  .education-dates {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+@media (min-width: 1041px) and (min-height: 620px) {
+  .education-list > li {
+    flex: 1 1 0;
+    min-height: min-content;
   }
 }
 
-@media (min-width: 1800px) {
-  .background {
-    max-width: none;
-    margin: 0 !important;
-  }
-}
-
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
+/* ---------- Nav pill ---------- */
 
 .dynamic-island-navbar {
   position: fixed;
-  top: 24px;
+  top: 18px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  background: rgba(30, 30, 30, 0.28);
-  border-radius: 32px;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.22), 0 2px 8px 0 rgba(0,0,0,0.18);
   display: flex;
   align-items: center;
-  padding: 0 18px;
-  min-width: 220px;
-  height: 54px;
-  gap: 18px;
-  border: 2px solid rgba(255,255,255,0.22);
+  gap: 14px;
+  height: 48px;
+  min-width: 200px;
+  padding: 0 8px 0 22px;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(30, 30, 30, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.22), 0 2px 8px 0 rgba(0, 0, 0, 0.18);
   backdrop-filter: blur(18px) saturate(160%);
   -webkit-backdrop-filter: blur(18px) saturate(160%);
-  overflow: hidden;
 }
-
 .dynamic-island-navbar::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(120deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 100%);
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
   pointer-events: none;
-  z-index: 0;
 }
-
 .dynamic-island-title {
-  font-family: 'monospace', 'Arial', sans-serif;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: 0.08em;
-  text-align: center;
-  flex: 1 1 auto;
   position: relative;
-  z-index: 1;
+  flex: 1 1 auto;
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-align: center;
 }
-
 .theme-toggle-btn {
-  background: none;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 50%;
-  transition: background 0.15s, color 0.15s;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  z-index: 1;
-}
-.theme-toggle-btn {
+  padding: 6px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
   color: #ffd700;
+  cursor: pointer;
+  transition: background 0.15s;
 }
 .theme-toggle-btn:hover {
-  background: rgba(255,255,255,0.12);
+  background: rgba(255, 255, 255, 0.12);
 }
 .theme-toggle-btn:focus-visible {
   outline: 2px solid #fff;
@@ -171,265 +489,137 @@ html, body {
 
 @media (max-width: 600px) {
   .dynamic-island-navbar {
-    min-width: 140px;
-    height: 40px;
-    padding: 0 8px;
-    border-radius: 18px;
-    gap: 8px;
-    top: 10px;
+    top: 12px;
+    height: 42px;
+    min-width: 160px;
+    padding-left: 18px;
   }
   .dynamic-island-title {
     font-size: 0.95rem;
   }
 }
 
-/* ---------- Single home layout ---------- */
-
-.home-grid {
-  display: grid;
-  gap: 2vh 1vw;
-  padding: 0 2vw 2vh;
-  grid-template-columns: 1fr 1fr 1fr 1.5fr;
-  grid-template-areas:
-    "pitch      pitch      pitch      pitch"
-    "experience experience headshot   resume"
-    "crest      playground playground resume";
-}
-
-.area-pitch      { grid-area: pitch; }
-.area-experience { grid-area: experience; }
-.area-playground { grid-area: playground; }
-.area-headshot   { grid-area: headshot; }
-.area-crest      { grid-area: crest; }
-.area-resume     { grid-area: resume; }
-
-.technology-grid-3 {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.project-grid {
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-}
-
-@media (max-width: 1340px) {
-  .home-grid {
-    grid-template-columns: 1fr 1fr 2fr;
-    grid-template-areas:
-      "pitch      pitch      pitch"
-      "experience experience resume"
-      "playground playground resume"
-      "headshot   crest      resume";
-  }
-  .technology-grid-3 {
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  }
-}
-
-@media (max-width: 1040px) {
-  .home-grid {
-    gap: 16px;
-    padding: 0 16px 40px;
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      "pitch      pitch"
-      "headshot   crest"
-      "resume     resume"
-      "experience experience"
-      "playground playground";
-  }
-  .technology-grid-3 {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  }
-  .resume-content {
-    padding: 0;
-  }
-}
-
-/* ---------- Clickable affordances ---------- */
-
-.is-clickable {
-  cursor: pointer;
-  color: inherit;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
-}
-.is-clickable:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-}
-.is-clickable:active {
-  transform: translateY(0) scale(0.98);
-  box-shadow: none;
-}
-.is-clickable:focus-visible {
-  outline: 3px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-
-.row-affordance {
-  flex-shrink: 0;
-  margin-left: auto;
-  padding-left: 8px;
-  opacity: 0.7;
-  transition: opacity 0.15s ease, transform 0.15s ease;
-}
-.is-clickable:hover .row-affordance,
-.is-clickable:focus-visible .row-affordance {
-  opacity: 1;
-  transform: rotate(90deg);
-}
-
-/* Skill filter */
-.technology-pill[aria-pressed='true'] {
-  box-shadow: inset 0 0 0 2px var(--accent);
-}
-.is-match {
-  box-shadow: 0 0 0 2px var(--accent);
-}
-.is-dimmed {
-  opacity: 0.35;
-}
-
-.skill-status {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-height: 1.75rem;
-  font-size: 0.9rem;
-  color: var(--card-subtext);
-}
-.skill-status-clear {
-  font: inherit;
-  color: var(--card-title);
-  background: none;
-  border: 1px solid currentColor;
-  border-radius: 999px;
-  padding: 2px 12px;
-  cursor: pointer;
-}
-.skill-status-clear:focus-visible {
-  outline: 3px solid var(--focus-ring);
-  outline-offset: 2px;
-}
-
-.pill-icon-fallback {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 48px;
-  height: 48px;
-  margin-right: 12px;
-  border-radius: 50%;
-  background: var(--row-border);
-}
-
-/* Resume rows */
-.resume-content {
-  list-style: none;
-  margin: 8px 0 0;
-  padding: 0 5%;
-  color: var(--row-fg);
-}
-.resume-content li + li {
-  margin-top: 1vh;
-}
-.resume-row {
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  width: 100%;
-  padding: 1vh 2vh;
-  border-radius: 20px;
-  background: var(--row-bg);
-  color: var(--row-fg);
-  border: 1.5px solid var(--row-border);
-  box-shadow: var(--row-shadow);
-  text-decoration: none;
-}
-.resume-row-logo {
-  width: 50px;
-  height: 50px;
-  flex-shrink: 0;
-  border-radius: 50%;
-}
-.resume-row-text {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  margin-left: 1rem;
-  text-align: left;
-}
-.resume-row-company {
-  font-size: 1.17em;
-  font-weight: 700;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .is-clickable,
-  .row-affordance {
+  .row-affordance,
+  .hero-email {
     transition: none;
   }
   .is-clickable:hover,
   .is-clickable:active,
-  .is-clickable:hover .row-affordance {
+  .is-clickable:hover .row-affordance,
+  a.hero-email:hover {
     transform: none;
   }
 }
 
-/* Pitch block */
-.rounded-card.pitch-card {
-  min-height: 0;
-}
-.pitch-card .card-content {
-  padding-top: 1.5vw;
-  padding-bottom: 1.5vw;
-}
-.pitch-name {
-  margin: 0;
-  color: var(--card-title);
-  font-size: 3.5rem;
-  font-weight: 400;
-  line-height: 1.1;
-}
-.pitch-role {
-  margin: 6px 0 0;
-  font-size: 1.25rem;
-}
-.pitch-blurb {
-  margin: 8px 0 0;
-  max-width: 70ch;
-  color: var(--card-subtext);
-  line-height: 1.5;
-}
-.pitch-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 24px;
-  margin: 16px 0 0;
-  padding: 0;
-  list-style: none;
-  font-size: 0.95rem;
-}
-.pitch-email {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--accent);
-  font-weight: 600;
-}
-.pitch-email:focus-visible {
-  outline: 3px solid var(--focus-ring);
-  outline-offset: 2px;
-}
+/* ---------- Desktop density ---------- */
 
-.resume-row-summary {
-  margin-top: 2px;
-  font-size: 0.85rem;
-  color: var(--card-subtext);
-}
-
-@media (max-width: 1040px) {
-  .pitch-name {
-    font-size: 2.5rem;
+@media (min-width: 1041px) {
+  /* One line per field keeps every row the same height. */
+  .resume-row-company,
+  .resume-row-role {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
+
+/* Short screens (e.g. 1366x768, 1280x720): tighten so everything still fits. */
+@media (min-width: 1041px) and (max-height: 860px) {
+  .background {
+    --nav-space: 74px;
+    --gap: 12px;
+  }
+  .home-grid {
+    padding-bottom: 16px;
+  }
+  .technology-grid {
+    gap: 6px;
+  }
+}
+
+/* ---------- Fill each tile (no dead space under pills or rows) ---------- */
+
+@media (min-width: 1041px) and (min-height: 620px) {
+  .card-content > .technology-grid {
+    align-content: stretch;
+    grid-auto-rows: minmax(min-content, 1fr);
+  }
+  .resume-content > li {
+    flex: 1 1 0;
+    min-height: min-content;
+  }
+}
+
+@media (min-width: 1041px) and (max-height: 860px) {
+  .education-list {
+    gap: 6px;
+  }
+  .education-item {
+    gap: 10px;
+    padding: 4px 12px 4px 8px;
+  }
+  .education-text,
+  .education-school {
+    line-height: 1.15;
+  }
+  .education-badge {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+  }
+}
+
+/* ---------- Skill logos (experience tile) ---------- */
+
+/* Logo-only buttons in an even grid that fills the tile. Logos rest in a
+   quiet monochrome and take their brand color on hover or when selected. */
+.technology-grid.skill-logos {
+  grid-template-columns: repeat(auto-fill, minmax(clamp(44px, 6vh, 64px), 1fr));
+  gap: 10px;
+}
+.skill-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  background: var(--pill-bg);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  color: var(--card-fg);
+  font: inherit;
+}
+.skill-logo svg,
+.skill-logo img {
+  width: clamp(20px, 3.3vh, 30px);
+  height: clamp(20px, 3.3vh, 30px);
+  opacity: 0.7;
+  transition: opacity 0.2s ease, fill 0.2s ease, filter 0.2s ease;
+}
+.skill-logo svg {
+  fill: currentColor;
+}
+.skill-logo img {
+  border-radius: 7px;
+  object-fit: contain;
+  filter: grayscale(1);
+}
+.skill-logo:hover svg,
+.skill-logo:focus-visible svg,
+.skill-logo[aria-pressed='true'] svg {
+  fill: var(--brand, currentColor);
+  opacity: 1;
+}
+.skill-logo:hover img,
+.skill-logo:focus-visible img,
+.skill-logo[aria-pressed='true'] img {
+  filter: none;
+  opacity: 1;
+}
+.skill-logo[aria-pressed='true'] {
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
