@@ -451,11 +451,10 @@ a.hero-email:focus-visible {
   box-sizing: border-box;
   overflow: hidden;
   border-radius: 999px;
-  background: rgba(30, 30, 30, 0.28);
+  /* No backdrop blur: it would re-blur the moving aurora on every frame. */
+  background: rgba(34, 34, 38, 0.82);
   border: 1px solid rgba(255, 255, 255, 0.22);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.22), 0 2px 8px 0 rgba(0, 0, 0, 0.18);
-  backdrop-filter: blur(18px) saturate(160%);
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
 }
 .dynamic-island-navbar::before {
   content: '';
@@ -496,7 +495,7 @@ a.hero-email:focus-visible {
 
 /* Light theme: a frosted white pill with dark text on the off-white page. */
 :root[data-theme='light'] .dynamic-island-navbar {
-  background: rgba(255, 255, 255, 0.62);
+  background: rgba(255, 255, 255, 0.86);
   border-color: rgba(0, 0, 0, 0.08);
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
 }
@@ -652,3 +651,36 @@ a.hero-email:focus-visible {
   box-shadow: inset 0 0 0 2px var(--accent);
 }
 
+
+/* ---------- Light theme: raised content inside the glass tiles ----------
+   Rows, pills and logo buttons sit on the glass as near-solid white chips
+   with their own outline and shadow, so the content reads first. Selected
+   and matching items keep their accent ring instead. */
+:root[data-theme='light'] .rounded-card :is(.resume-row, .education-item, .technology-pill, .skill-logo, .skill-status-clear, .card-external-link):not([aria-pressed='true']):not(.is-match) {
+  box-shadow:
+    0 0 0 1px rgba(30, 40, 70, 0.08),
+    0 8px 18px -10px rgba(30, 40, 70, 0.32),
+    0 1px 2px rgba(30, 40, 70, 0.08),
+    inset 0 1px 0 #fff;
+}
+:root[data-theme='light'] .rounded-card .is-clickable:not([aria-pressed='true']):not(.is-match):hover {
+  box-shadow:
+    0 0 0 1px rgba(30, 40, 70, 0.1),
+    0 14px 26px -12px rgba(30, 40, 70, 0.42),
+    0 1px 2px rgba(30, 40, 70, 0.08),
+    inset 0 1px 0 #fff;
+}
+:root[data-theme='light'] .rounded-card :is(.resume-row-company, .education-school) {
+  color: #000;
+  font-weight: 700;
+}
+:root[data-theme='light'] .rounded-card .skill-logo :is(svg, img) {
+  opacity: 0.9;
+}
+:root[data-theme='light'] .rounded-card .row-affordance {
+  opacity: 0.6;
+}
+:root[data-theme='light'] .rounded-card .is-clickable:is(:hover, :focus-visible) .row-affordance,
+:root[data-theme='light'] .rounded-card .skill-logo:is(:hover, :focus-visible, [aria-pressed='true']) :is(svg, img) {
+  opacity: 1;
+}

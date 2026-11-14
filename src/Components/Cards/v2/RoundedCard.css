@@ -8,8 +8,6 @@
   background: var(--card-shell-bg);
   color: var(--card-fg);
   box-shadow: var(--card-shell-shadow), inset 0 0 0 1px var(--hairline);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
   text-align: left;
   transition: box-shadow 0.3s ease;
 }
@@ -135,5 +133,61 @@
   }
   .card-external-link:hover {
     transform: none;
+  }
+}
+
+/* ---------- Light theme: frosted glass tiles ----------
+   The tile is a sheet of milky glass over the aurora, with a bright rim and
+   a soft highlight across the top. There is deliberately no backdrop-filter:
+   the aurora behind is already soft, and re-blurring it under every tile on
+   every animation frame was the main cause of jank.
+   Pills and chips inside become lighter panes of the same glass. */
+:root[data-theme='light'] .rounded-card {
+  --pill-bg: rgba(255, 255, 255, 0.86);
+  --pill-hover-bg: #fff;
+  --card-subtext: #3c3c43;
+  --hairline: rgba(255, 255, 255, 0.7);
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.88) 0%,
+    rgba(255, 255, 255, 0.68) 45%,
+    rgba(255, 255, 255, 0.76) 100%
+  );
+  /* A faint dark outline plus a deep, layered shadow lift the tile off the page. */
+  box-shadow:
+    0 0 0 1px rgba(30, 40, 70, 0.1),
+    0 30px 60px -22px rgba(30, 40, 70, 0.38),
+    0 10px 22px -10px rgba(30, 40, 70, 0.16),
+    0 2px 4px rgba(30, 40, 70, 0.06),
+    inset 0 1px 0 #fff,
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+}
+
+:root[data-theme='light'] .rounded-card .card-content {
+  background-color: transparent;
+}
+
+/* Hover keeps the glass look: the tile lifts and its rim brightens. */
+:root[data-theme='light'] .rounded-card-glow:hover {
+  box-shadow:
+    0 0 0 1px rgba(30, 40, 70, 0.09),
+    0 40px 72px -22px rgba(30, 40, 70, 0.46),
+    0 12px 26px -10px rgba(30, 40, 70, 0.2),
+    0 2px 4px rgba(30, 40, 70, 0.06),
+    inset 0 1px 0 #fff,
+    inset 0 0 0 1px rgba(255, 255, 255, 0.95);
+}
+
+/* The scrolling lists clip anything outside their box, which cut off the
+   pills' outlines and drop shadows. Give each list a gutter for the shadows
+   and pull it back out with equal negative margins, so the pills stay the
+   same size and in the same place. */
+@media (min-width: 1041px) {
+  .rounded-card .card-content > ul,
+  .rounded-card .card-content > .technology-grid {
+    padding: 4px 14px 22px;
+    margin-inline: -14px;
+    margin-bottom: -22px;
+    margin-top: calc(clamp(10px, 1.8vh, 18px) - 4px);
   }
 }

@@ -10,6 +10,8 @@
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
+  /* Nothing in here affects layout or paint outside it. */
+  contain: strict;
   /* Curtains blend against the page colour, not against nothing. */
   background: var(--page-bg);
 }
@@ -24,17 +26,29 @@
   height: var(--h);
   transform-origin: 50% 100%;
   rotate: var(--tilt);
-  mix-blend-mode: screen;
   animation: aurora-sway var(--dur) ease-in-out var(--delay) infinite alternate;
   will-change: transform;
 }
 
-/* The curtain of light: a long curved ribbon (the top of a wide ellipse)
-   with a crisp lower edge that fades upward into the sky, and soft ends. */
+/* The moving part of a curtain. It only ever changes transform and opacity,
+   so the browser slides one ready-made picture around on the GPU. */
 .aurora-curtain {
   position: absolute;
   inset: 0;
-  overflow: hidden;
+  animation:
+    aurora-breathe var(--breathe) ease-in-out var(--delay) infinite alternate,
+    aurora-flow var(--flow) ease-in-out var(--delay) infinite alternate;
+  will-change: opacity, transform;
+}
+
+/* The curtain of light itself: a long curved ribbon (the top of a wide
+   ellipse) with a crisp lower edge that fades upward into the sky, and soft
+   ends. It never animates, so its gradient and masks are drawn once and
+   reused, instead of being re-masked on every frame. */
+.aurora-curtain::before {
+  content: '';
+  position: absolute;
+  inset: 0;
   background: radial-gradient(
     ellipse 70% 115% at 50% 118%,
     transparent 50%,
@@ -52,16 +66,12 @@
     linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%),
     linear-gradient(to top, transparent 0%, #000 18%, #000 62%, transparent 100%);
   mask-composite: intersect;
-  animation:
-    aurora-breathe var(--breathe) ease-in-out var(--delay) infinite alternate,
-    aurora-flow var(--flow) ease-in-out var(--delay) infinite alternate;
-  will-change: opacity, transform;
 }
 
-/* Light theme: soft pastel curtains that tint the off-white page. */
+/* Light theme: coloured curtains on a cool grey page, deep enough that the
+   white glass tiles stand apart from them. */
 :root[data-theme='light'] .aurora-glow {
-  --tint: color-mix(in srgb, var(--c) 30%, transparent);
-  mix-blend-mode: multiply;
+  --tint: color-mix(in srgb, var(--c) 46%, transparent);
 }
 
 @keyframes aurora-sway {
@@ -86,6 +96,12 @@
   to { transform: translate3d(var(--flow-x), 0, 0); }
 }
 
+/* While a popup is open the page behind is blurred, so hold the sky still:
+   the browser then blurs it once instead of on every frame. */
+:root:has(.MuiDialog-root) .aurora-glow,
+:root:has(.MuiDialog-root) .aurora-curtain {
+  animation-play-state: paused;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .aurora-glow,

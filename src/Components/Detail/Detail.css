@@ -13,8 +13,6 @@
 }
 .MuiDialog-root .detail-backdrop {
   background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
 }
 
 .detail-top {
@@ -228,12 +226,12 @@
 }
 
 .MuiDialog-root .detail-backdrop {
-  background: rgba(0, 0, 0, 0.42);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  /* A plain scrim, no backdrop blur: blurring the whole page behind the popup
+     was redone on every frame the popup animated or the cursor glow moved. */
+  background: rgba(8, 8, 12, 0.72);
 }
 :root[data-theme='light'] .MuiDialog-root .detail-backdrop {
-  background: rgba(240, 240, 245, 0.45);
+  background: rgba(226, 229, 236, 0.8);
 }
 
 .MuiDialog-root .detail-paper {
