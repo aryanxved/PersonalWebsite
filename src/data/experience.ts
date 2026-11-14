@@ -7,8 +7,8 @@ import manulife from '../Components/Images/Experience/Manulife.png';
 import estee from '../Components/Images/Experience/Estee.jpg';
 import ehToZed from '../Components/Images/Experience/PreschoolCanada.jpeg';
 
-// From Aryan's resume. `summary` is the one-line result on each resume row;
-// `highlights` are the full resume points shown in the popup.
+// From Aryan's resume. `team` is the line above the highlights in the popup;
+// `highlights` are the full resume points.
 // `brand` colors were sampled from each company's logo and theme its popup.
 // `stack` drives the skill filter, so names must match technologies.ts
 // (C#, JavaScript, TypeScript, Kotlin, React, React Native) to be highlighted.
@@ -21,7 +21,7 @@ export const experience: Experience[] = [
     start: 'Jun 2025',
     end: 'Present',
     location: 'Waterloo',
-    summary: 'Shipped OnBase workflow enhancements for 10+ divisions and 40+ process queues',
+    team: '📊 Enterprise Content Management Team, Data Platforms',
     highlights: [
       'Shipped cross-divisional OnBase workflow enhancements, enabling reliable releases for 10+ divisions and 40+ process queues',
       'Authored technical system specifications defining business logic, data flows and tradeoffs reducing rework for implementation',
@@ -39,7 +39,7 @@ export const experience: Experience[] = [
     start: 'Sep 2024',
     end: 'Dec 2024',
     location: 'Toronto',
-    summary: 'Revamped the registration flow, raising account funding and completion KPIs by 28%',
+    team: 'Engineering - Growth Team, Onboarding and Client Acquisition Flow',
     highlights: [
       'Revamped registration flow using React/Typescript/AWS Lambda increasing account funding and completion rate KPIs by 28%',
       'Implemented conditional testing for pull requests using Jest, Cypress & GitHub Actions reducing test execution time by 80%',
@@ -57,7 +57,7 @@ export const experience: Experience[] = [
     start: 'Jan 2024',
     end: 'Apr 2024',
     location: 'Oakville',
-    summary: 'Delivered 22+ bugfix tickets across the core product, including critical production alerts',
+    team: '🏭 Smart Factory Platform - Development Team',
     highlights: [
       'Delivered 22+ crucial bugfix tickets on Jira across the core product affecting critical production alerts and AWS CloudWatch logs',
       'Developed highly requested module allowing custom departments for clients using C#.Net, React, PostgreSQL, Jest, NUnit',
@@ -74,7 +74,7 @@ export const experience: Experience[] = [
     start: 'May 2023',
     end: 'Aug 2023',
     location: 'Toronto',
-    summary: 'Implemented core features for 2,000 small business users on a C# WPF application',
+    team: '🏦 Personal and Commercial Banking - Automation Solutions Team',
     highlights: [
       'Automated manual collateral securities form processes with a digital portal using C# .Net, Angular, Typescript & SQL Server',
       'Developed wire transfer tool for branch managers, volume tested sending 500+ automatic information based emails per day',
@@ -91,7 +91,7 @@ export const experience: Experience[] = [
     start: 'Sep 2022',
     end: 'Dec 2022',
     location: 'Waterloo',
-    summary: 'Led the migration of 75 repositories from TFS to GitHub',
+    team: '🌐 Global Wealth Asset Management - Digitization and Automation Team',
     highlights: [
       "Spearheaded critical migration from existing source control system using TFS to GitHub Team's containing 75 repositories",
       'Developed a C# .Net application connected to SQL Server database to automate processes for certified annuity specialists',
@@ -108,7 +108,7 @@ export const experience: Experience[] = [
     start: 'Jan 2022',
     end: 'Apr 2022',
     location: 'Toronto',
-    summary: 'Built an AR experience in Unity with live REST data from 30 machines',
+    team: '🕶️ Supply Chain - Augmented Reality Applications',
     highlights: [
       'Created AR experience in C#/Unity with live REST data from 30 machines; dashboard to convert Excel to SQL using .NET Core',
       'Led AR initiative through discovery sessions, prototyping design in Figma and automating workflows with Power Automate/BI',
@@ -124,7 +124,7 @@ export const experience: Experience[] = [
     start: 'May 2021',
     end: 'Aug 2021',
     location: 'Aurora',
-    summary: 'Worked on a VR educational game to assist children with autism',
+    team: '📚 Educational Tools and Technology',
     highlights: [
       'Worked on an educational game to assist children with autism using C# scripts, Unity engine and Oculus Quest 2 VR device',
     ],

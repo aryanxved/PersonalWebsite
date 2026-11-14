@@ -5,6 +5,7 @@ import About from './Pages/About/About';
 import Playground from './Pages/Playground/Playground';
 import Projects from './Pages/Projects/Projects';
 import { ThemeProvider } from './theme/ThemeContext';
+import { featureFlags } from './featureFlags';
 import { EducationDialog, ExperienceDialog, ProjectDialog } from './Components/Detail/DetailDialog';
 
 export interface DetailLocationState {
@@ -34,7 +35,7 @@ function AppRoutes() {
       {/* Dialog layer: always matches the real URL. */}
       <Routes>
         <Route path="/experience/:id" element={<ExperienceDialog />} />
-        <Route path="/projects/:id" element={<ProjectDialog />} />
+        <Route path="/projects/:id" element={featureFlags.projectPopups ? <ProjectDialog /> : null} />
         <Route path="/education/:id" element={<EducationDialog />} />
         <Route path="*" element={null} />
       </Routes>

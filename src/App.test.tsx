@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from './App';
+import { featureFlags } from './featureFlags';
 import { THEME_STORAGE_KEY } from './theme/ThemeContext';
 
 const renderAt = (path: string) =>
@@ -11,6 +12,9 @@ const renderAt = (path: string) =>
   );
 
 beforeEach(() => {
+  // Most tests cover the finished site; the flag-off behaviour has its own test.
+  featureFlags.projectPopups = true;
+  featureFlags.resumeLink = true;
   window.localStorage.clear();
   delete document.documentElement.dataset.theme;
 });
@@ -163,6 +167,10 @@ test('education pills open a popup; Previous is the older school, Next the newer
   fireEvent.click(screen.getByRole('link', { name: /University of Waterloo/ }));
   expect(await screen.findByRole('dialog', { name: 'University of Waterloo' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: /Next.*Georgia Tech/ })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Initiatives' })).toBeInTheDocument();
+  expect(screen.getByText('Vice-President of Technology @ UW FinTech')).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: 'Courses' })).toBeInTheDocument();
+  expect(screen.getByText('Machine Learning')).toBeInTheDocument();
 
   fireEvent.click(screen.getByRole('link', { name: /Previous.*SciTech North/ }));
   expect(await screen.findByRole('dialog', { name: 'SciTech North Regional Program' })).toBeInTheDocument();
@@ -198,4 +206,45 @@ test('project popups have no cursor glow', async () => {
   renderAt('/projects/flickpick');
   await screen.findByRole('dialog', { name: 'FlickPick Movie App' });
   expect(document.querySelector('.detail-follow-glow')).toBeNull();
+});
+
+test('with project popups switched off, Playground tiles are not clickable', () => {
+  featureFlags.projectPopups = false;
+  renderAt('/projects/flickpick');
+  expect(screen.getByText('FlickPick Movie App')).toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: /FlickPick Movie App/ })).not.toBeInTheDocument();
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  // Experience rows still open their popups.
+  expect(screen.getByRole('link', { name: /Relay Financial Technologies/ })).toHaveAttribute('href', '/experience/relay');
+});
+
+test('the resume file link follows its flag', () => {
+  const { unmount } = renderAt('/');
+  expect(screen.getByRole('link', { name: 'Resume (opens in a new tab)' })).toHaveAttribute('target', '_blank');
+  unmount();
+
+  featureFlags.resumeLink = false;
+  renderAt('/');
+  expect(screen.queryByRole('link', { name: 'Resume (opens in a new tab)' })).not.toBeInTheDocument();
+  expect(screen.getByText('RESUME')).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'LinkedIn (opens in a new tab)' })).toBeInTheDocument();
+});
+
+test('an experience popup names the team above its highlights', async () => {
+  renderAt('/experience/equitable');
+  const dialog = await screen.findByRole('dialog', { name: 'Intermediate Business Systems Analyst' });
+  expect(dialog).toHaveTextContent('📊 Enterprise Content Management Team, Data Platforms');
+});
+
+test('the photo card links to LinkedIn and GitHub', () => {
+  renderAt('/');
+  expect(screen.getByRole('link', { name: 'LinkedIn profile (opens in a new tab)' })).toHaveAttribute(
+    'href',
+    'https://www.linkedin.com/in/aryanved'
+  );
+  expect(screen.getByRole('link', { name: 'GitHub profile (opens in a new tab)' })).toHaveAttribute(
+    'href',
+    'https://github.com/aryanxved'
+  );
+  expect(screen.queryByText(/TODO: your email address/)).not.toBeInTheDocument();
 });

@@ -1,6 +1,6 @@
 import { CSSProperties, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { EnvelopeSimple, Lightbulb, Plus } from '@phosphor-icons/react';
+import { GithubLogo, Lightbulb, LinkedinLogo, Plus } from '@phosphor-icons/react';
 import './Home.css';
 import NavBar from '../../Components/NavBar/NavBar';
 import { RoundedCard } from '../../Components/Cards/v2/RoundedCard';
@@ -15,9 +15,13 @@ import SchoolBadge from '../../Components/SchoolBadge';
 import TypingLine from '../../Components/TypingLine/TypingLine';
 import Aurora from '../../Components/Aurora/Aurora';
 import { experiencePhrases, pitch, playgroundPhrases } from '../../data/copy';
+import { featureFlags } from '../../featureFlags';
 import { isTodo } from '../../data/types';
 import type { Project, Technology } from '../../data/types';
 import headshot from '../../Components/Images/Education/headshot.jpg';
+
+// The pill only has room for years; the popup shows the full dates.
+const yearOf = (date: string) => date.match(/\d{4}/)?.[0] ?? date;
 
 function Home() {
   const location = useLocation();
@@ -50,14 +54,28 @@ function Home() {
             <div className="hero-overlay">
               <h1 className="hero-name">{pitch.name}</h1>
               <Todoable className="hero-role" value={pitch.role} />
-              {isTodo(links.email) ? (
-                <span className="hero-email todo-text">{links.email}</span>
-              ) : (
-                <a className="hero-email" href={`mailto:${links.email}`}>
-                  <EnvelopeSimple size={16} aria-hidden />
-                  Email me
+              <div className="hero-links">
+                <a
+                  className="hero-link"
+                  href={links.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn profile (opens in a new tab)"
+                  title="LinkedIn"
+                >
+                  <LinkedinLogo weight="fill" aria-hidden />
                 </a>
-              )}
+                <a
+                  className="hero-link"
+                  href={links.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub profile (opens in a new tab)"
+                  title="GitHub"
+                >
+                  <GithubLogo weight="fill" aria-hidden />
+                </a>
+              </div>
             </div>
           </RoundedCard>
 
@@ -79,7 +97,14 @@ function Home() {
                       <span className="education-years">
                         {entry.incoming && <span className="education-tag">Incoming</span>}
                         <span className="education-dates">
-                          <Todoable as="span" value={entry.start} /> – <Todoable as="span" value={entry.end} />
+                          {entry.incoming ? (
+                            // Beside the "Incoming" tag there is only room for the start year.
+                            <Todoable as="span" value={yearOf(entry.start)} />
+                          ) : (
+                            <>
+                              <Todoable as="span" value={yearOf(entry.start)} /> – <Todoable as="span" value={yearOf(entry.end)} />
+                            </>
+                          )}
                         </span>
                       </span>
                     </div>
@@ -148,12 +173,9 @@ const TechnologyPill = ({ tech, pressed, onToggle }: TechnologyPillProps) => (
 
 const ProjectPill = ({ project, activeSkill }: { project: Project; activeSkill: string | null }) => {
   const location = useLocation();
-  return (
-    <Link
-      to={`/projects/${project.id}`}
-      state={{ backgroundLocation: location }}
-      className={`technology-pill project-pill is-clickable${skillMatchClass(project.stack, activeSkill)}`}
-    >
+  const className = `technology-pill project-pill${skillMatchClass(project.stack, activeSkill)}`;
+  const content = (
+    <>
       {project.icon ? (
         <img src={project.icon} alt="" />
       ) : (
@@ -162,6 +184,19 @@ const ProjectPill = ({ project, activeSkill }: { project: Project; activeSkill: 
         </span>
       )}
       <span>{project.title}</span>
+    </>
+  );
+
+  // Until the project popups are ready, the tile is a plain label.
+  if (!featureFlags.projectPopups) return <div className={className}>{content}</div>;
+
+  return (
+    <Link
+      to={`/projects/${project.id}`}
+      state={{ backgroundLocation: location }}
+      className={`${className} is-clickable`}
+    >
+      {content}
       <Plus size={16} className="row-affordance" aria-hidden />
     </Link>
   );

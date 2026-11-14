@@ -258,7 +258,7 @@ export const ExperienceDialog = () => (
     )}
     body={(job) => (
       <>
-        <Text as="p" value={job.summary} />
+        <Text as="p" value={job.team} />
         <Section heading="Highlights">
           <ul className="detail-list">
             {job.highlights.map((highlight) => (
@@ -366,15 +366,31 @@ export const EducationDialog = () => (
         <Section heading="Program">
           <Text as="p" value={school.program} />
         </Section>
-        <Section heading="Highlights">
-          <ul className="detail-list">
-            {school.highlights.map((highlight) => (
-              <li key={highlight}>
-                <Text value={highlight} />
-              </li>
-            ))}
-          </ul>
-        </Section>
+        {school.highlights.length > 0 && (
+          <Section heading="Highlights">
+            <ul className="detail-list">
+              {school.highlights.map((highlight) => (
+                <li key={highlight}>
+                  <Text value={highlight} />
+                </li>
+              ))}
+            </ul>
+          </Section>
+        )}
+        {school.initiatives?.length ? (
+          <Section heading="Initiatives">
+            <ul className="detail-list">
+              {school.initiatives.map((initiative) => (
+                <li key={initiative}>{initiative}</li>
+              ))}
+            </ul>
+          </Section>
+        ) : null}
+        {school.courses?.length ? (
+          <Section heading="Courses">
+            <Stack stack={school.courses} />
+          </Section>
+        ) : null}
       </>
     )}
   />

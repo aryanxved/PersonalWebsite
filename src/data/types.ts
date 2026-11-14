@@ -17,8 +17,8 @@ export interface Experience {
   start: string;
   end: string;
   location: string;
-  /** One line with a measurable result, shown on the resume row. */
-  summary: string;
+  /** Team and area worked in, shown in the popup above the highlights. */
+  team: string;
   highlights: string[];
   /** Technology names; must match `Technology.name` to work with the skill filter. */
   stack: string[];
@@ -56,8 +56,12 @@ export interface Education {
   program: string;
   start: string;
   end: string;
-  /** Shown in the popup: coursework, awards, clubs, etc. */
+  /** Shown in the popup: awards and distinctions. Leave empty to hide the section. */
   highlights: string[];
+  /** Shown in the popup as a list: clubs, teams and leadership roles. */
+  initiatives?: string[];
+  /** Shown in the popup as chips. */
+  courses?: string[];
   /** Square logo; without one, `monogram` is shown on a colored badge. */
   logo?: string;
   /** Badge fill behind the logo, for logos that are not square (defaults to white). */

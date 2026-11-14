@@ -47,14 +47,14 @@ export const projects: Project[] = [
   },
   {
     id: 'temperature-glove',
-    title: 'TODO: Temperature-sensing glove (title)',
+    title: 'Temperature-Sensing Glove',
     ...todoDetails,
     stack: [], // TODO: glove stack
   },
   {
-    id: 'cad',
-    title: 'TODO: CAD project (title)',
+    id: 'the-hungry-warrior',
+    title: 'The Hungry Warrior',
     ...todoDetails,
-    stack: [], // TODO: CAD tools used
+    stack: [], // TODO: tools used
   },
 ];

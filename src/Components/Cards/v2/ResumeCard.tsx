@@ -3,6 +3,7 @@ import { Plus } from '@phosphor-icons/react';
 import { RoundedCard } from './RoundedCard';
 import { experience } from '../../../data/experience';
 import { links } from '../../../data/links';
+import { featureFlags } from '../../../featureFlags';
 import { skillMatchClass } from '../../skillFilter';
 
 interface ResumeCardProps {
@@ -14,7 +15,12 @@ const ResumeCard = ({ className, activeSkill }: ResumeCardProps) => {
   const location = useLocation();
 
   return (
-    <RoundedCard title="RESUME" glow className={className} externalLink={{ url: links.resume, label: 'Resume' }}>
+    <RoundedCard
+      title="RESUME"
+      glow
+      className={className}
+      externalLink={featureFlags.resumeLink ? { url: links.resume, label: 'Resume' } : undefined}
+    >
       <ul className="resume-content">
         {experience.map((job) => (
           <li key={job.id}>
