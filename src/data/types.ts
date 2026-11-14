@@ -1,6 +1,13 @@
 import type { Icon as PhosphorIcon } from '@phosphor-icons/react';
 import type { BrandIcon } from './brandIcons';
 
+/** Colors sampled from a company's logo, used to theme its popup. */
+export interface BrandColors {
+  primary: string;
+  /** A second logo color, used as the accent in dark mode when present. */
+  secondary?: string;
+}
+
 export interface Experience {
   /** URL slug, used in /experience/:id */
   id: string;
@@ -15,6 +22,7 @@ export interface Experience {
   highlights: string[];
   /** Technology names; must match `Technology.name` to work with the skill filter. */
   stack: string[];
+  brand: BrandColors;
 }
 
 export interface ProjectLink {

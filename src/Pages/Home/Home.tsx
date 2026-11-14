@@ -13,6 +13,7 @@ import { links } from '../../data/links';
 import { education } from '../../data/education';
 import SchoolBadge from '../../Components/SchoolBadge';
 import TypingLine from '../../Components/TypingLine/TypingLine';
+import Aurora from '../../Components/Aurora/Aurora';
 import { experiencePhrases, pitch, playgroundPhrases } from '../../data/copy';
 import { isTodo } from '../../data/types';
 import type { Project, Technology } from '../../data/types';
@@ -27,6 +28,7 @@ function Home() {
     <>
       <NavBar />
       <main className="background">
+        <Aurora />
         <div className="home-grid">
           <RoundedCard
             className="area-experience"

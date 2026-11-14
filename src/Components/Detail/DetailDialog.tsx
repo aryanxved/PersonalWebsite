@@ -1,13 +1,14 @@
-import { ReactNode, useEffect, useId } from 'react';
+import { CSSProperties, PointerEvent, ReactNode, useEffect, useId, useRef } from 'react';
 import { Link, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import Dialog from '@mui/material/Dialog';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { ArrowSquareOut, CaretLeft, CaretRight, X } from '@phosphor-icons/react';
+import { ArrowSquareOut, CaretLeft, CaretRight, Lightbulb, X } from '@phosphor-icons/react';
 import { experience } from '../../data/experience';
 import { projects } from '../../data/projects';
 import { education } from '../../data/education';
 import SchoolBadge from '../SchoolBadge';
 import { isTodo } from '../../data/types';
+import type { BrandColors } from '../../data/types';
 import type { DetailLocationState } from '../../App';
 import './Detail.css';
 
@@ -23,14 +24,94 @@ interface DetailShellProps<T extends Entry> {
   title: (item: T) => string;
   header: (item: T, titleId: string) => ReactNode;
   body: (item: T) => ReactNode;
+  /** Optional per-entry brand colors that theme the popup. */
+  brand?: (item: T) => BrandColors | undefined;
+  /** Small logo for an entry, shown on the previous/next cards. */
+  thumb?: (item: T) => ReactNode;
+  /**
+   * The list is a timeline stored newest first. Previous then steps back in
+   * time (to the older entry) and Next steps forward (to the newer one).
+   */
+  timeline?: boolean;
 }
 
-function DetailShell<T extends Entry>({ items, basePath, label, title, header, body }: DetailShellProps<T>) {
+const prefersReducedMotion = () =>
+  typeof window.matchMedia === 'function' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/**
+ * A brand-coloured glow that follows the mouse inside the popup.
+ *
+ * The glow is its own small layer moved with transform (GPU-composited, so
+ * nothing repaints), and each frame it eases a fraction of the way toward
+ * the cursor. That keeps it attached to the pointer but soft, without the
+ * lag of a CSS transition. It fades in on enter and out on leave; the static
+ * glow at the top of the sheet remains underneath.
+ */
+const FOLLOW_EASE = 0.22; // share of the remaining distance covered per frame
+
+const useGlowFollow = () => {
+  const glowRef = useRef<HTMLSpanElement>(null);
+  const frame = useRef(0);
+  const target = useRef({ x: 0, y: 0 });
+  const current = useRef({ x: 0, y: 0 });
+  const placed = useRef(false);
+
+  useEffect(() => () => cancelAnimationFrame(frame.current), []);
+
+  const render = () => {
+    const glow = glowRef.current;
+    if (!glow) return;
+    const c = current.current;
+    const t = target.current;
+    c.x += (t.x - c.x) * FOLLOW_EASE;
+    c.y += (t.y - c.y) * FOLLOW_EASE;
+    glow.style.transform = `translate3d(${c.x.toFixed(1)}px, ${c.y.toFixed(1)}px, 0)`;
+    // Keep animating until the glow has caught up with the cursor.
+    if (Math.abs(t.x - c.x) > 0.3 || Math.abs(t.y - c.y) > 0.3) {
+      frame.current = requestAnimationFrame(render);
+    } else {
+      frame.current = 0;
+    }
+  };
+
+  const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    // Mouse only (touch has no hover); a missing type is treated as a mouse.
+    if ((event.pointerType && event.pointerType !== 'mouse') || prefersReducedMotion()) return;
+    const box = event.currentTarget.getBoundingClientRect();
+    target.current = { x: event.clientX - box.left, y: event.clientY - box.top };
+    if (!placed.current) {
+      // First move: start exactly under the cursor rather than flying in.
+      current.current = { ...target.current };
+      placed.current = true;
+    }
+    glowRef.current?.classList.add('is-active');
+    if (!frame.current) frame.current = requestAnimationFrame(render);
+  };
+
+  const onPointerLeave = () => {
+    glowRef.current?.classList.remove('is-active');
+    placed.current = false;
+  };
+
+  return { glowRef, handlers: { onPointerMove, onPointerLeave } };
+};
+
+/** CSS variables for a branded popup; Detail.css derives readable shades from them. */
+const brandStyle = (colors?: BrandColors): CSSProperties | undefined =>
+  colors
+    ? ({
+        '--brand-primary': colors.primary,
+        '--brand-secondary': colors.secondary ?? colors.primary,
+      } as CSSProperties)
+    : undefined;
+
+function DetailShell<T extends Entry>({ items, basePath, label, title, header, body, brand, thumb, timeline = false }: DetailShellProps<T>) {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const titleId = useId();
   const fullScreen = useMediaQuery('(max-width: 640px)');
+  const glow = useGlowFollow();
   const state = location.state as DetailLocationState | null;
 
   const index = items.findIndex((item) => item.id === id);
@@ -51,8 +132,11 @@ function DetailShell<T extends Entry>({ items, basePath, label, title, header, b
   // Direct visit: there is nothing to go back to on this site, so replace with Home.
   const close = () => (state?.backgroundLocation ? navigate(-1) : navigate('/', { replace: true }));
 
-  const prev = index > 0 ? items[index - 1] : undefined;
-  const next = index < items.length - 1 ? items[index + 1] : undefined;
+  const earlierInList = index > 0 ? items[index - 1] : undefined;
+  const laterInList = index < items.length - 1 ? items[index + 1] : undefined;
+  // Timelines are stored newest first, so "previous" (older) is later in the list.
+  const prev = timeline ? laterInList : earlierInList;
+  const next = timeline ? earlierInList : laterInList;
 
   return (
     <Dialog
@@ -63,9 +147,12 @@ function DetailShell<T extends Entry>({ items, basePath, label, title, header, b
       maxWidth="md"
       fullWidth
       aria-labelledby={titleId}
-      PaperProps={{ className: 'detail-paper' }}
+      className={brand?.(item) ? 'is-branded' : undefined}
+      style={brandStyle(brand?.(item))}
+      PaperProps={{ className: 'detail-paper', ...(brand?.(item) ? glow.handlers : {}) }}
       BackdropProps={{ className: 'detail-backdrop' }}
     >
+      {brand?.(item) && <span ref={glow.glowRef} className="detail-follow-glow" aria-hidden />}
       <div className="detail-top">
         {header(item, titleId)}
         <button type="button" className="detail-icon-button" aria-label="Close" onClick={close}>
@@ -76,31 +163,55 @@ function DetailShell<T extends Entry>({ items, basePath, label, title, header, b
       <div className="detail-body">{body(item)}</div>
 
       <nav className="detail-nav" aria-label="More entries">
+        {/* replace: prev/next swaps the entry in place, so one close/back still returns to Home. */}
         {prev ? (
-          // replace: prev/next swaps the entry in place, so one close/back still returns to Home.
-          <Link className="detail-nav-link" to={`${basePath}/${prev.id}`} replace state={state}>
-            <CaretLeft size={18} aria-hidden />
-            <span>
-              <span className="detail-nav-hint">Previous</span>
-              {label(prev)}
-            </span>
-          </Link>
+          <NavCard direction="prev" to={`${basePath}/${prev.id}`} state={state} name={label(prev)} logo={thumb?.(prev)} brand={brand?.(prev)} />
         ) : (
           <span />
         )}
-        {next && (
-          <Link className="detail-nav-link detail-nav-next" to={`${basePath}/${next.id}`} replace state={state}>
-            <span>
-              <span className="detail-nav-hint">Next</span>
-              {label(next)}
-            </span>
-            <CaretRight size={18} aria-hidden />
-          </Link>
+        {next ? (
+          <NavCard direction="next" to={`${basePath}/${next.id}`} state={state} name={label(next)} logo={thumb?.(next)} brand={brand?.(next)} />
+        ) : (
+          <span />
         )}
       </nav>
     </Dialog>
   );
 }
+
+interface NavCardProps {
+  direction: 'prev' | 'next';
+  to: string;
+  state: DetailLocationState | null;
+  name: string;
+  logo?: ReactNode;
+  brand?: BrandColors;
+}
+
+/** Previous/next card: logo, a small label and the entry's name. */
+const NavCard = ({ direction, to, state, name, logo, brand }: NavCardProps) => {
+  const Caret = direction === 'prev' ? CaretLeft : CaretRight;
+  return (
+    <Link
+      className={`detail-nav-link detail-nav-card is-${direction}`}
+      to={to}
+      replace
+      state={state}
+      style={brand ? ({ '--nav-brand': brand.primary } as CSSProperties) : undefined}
+    >
+      <Caret className="detail-nav-caret" size={16} weight="bold" aria-hidden />
+      {logo && (
+        <span className="detail-nav-thumb" aria-hidden>
+          {logo}
+        </span>
+      )}
+      <span className="detail-nav-text">
+        <span className="detail-nav-hint">{direction === 'prev' ? 'Previous' : 'Next'}</span>{' '}
+        <span className="detail-nav-name">{name}</span>
+      </span>
+    </Link>
+  );
+};
 
 /** Renders a value, styling "TODO:" placeholders so they are easy to spot. */
 const Text = ({ value, as: Tag = 'span' }: { value: string; as?: 'span' | 'p' }) => (
@@ -129,7 +240,10 @@ export const ExperienceDialog = () => (
   <DetailShell
     items={experience}
     basePath="/experience"
+    timeline
+    brand={(job) => job.brand}
     label={(job) => job.company}
+    thumb={(job) => <img src={job.logo} alt="" />}
     title={(job) => `${job.role}, ${job.company}`}
     header={(job, titleId) => (
       <div className="detail-heading">
@@ -167,6 +281,7 @@ export const ProjectDialog = () => (
     items={projects}
     basePath="/projects"
     label={(project) => project.title}
+    thumb={(project) => (project.icon ? <img src={project.icon} alt="" /> : <Lightbulb size={20} />)}
     title={(project) => project.title}
     header={(project, titleId) => (
       <div className="detail-heading">
@@ -230,7 +345,9 @@ export const EducationDialog = () => (
   <DetailShell
     items={education}
     basePath="/education"
+    timeline
     label={(school) => school.shortName}
+    thumb={(school) => <SchoolBadge school={school} />}
     title={(school) => school.school}
     header={(school, titleId) => (
       <div className="detail-heading">

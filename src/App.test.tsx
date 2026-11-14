@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from './App';
 import { THEME_STORAGE_KEY } from './theme/ThemeContext';
@@ -104,14 +104,23 @@ test('Escape closes a directly visited dialog', async () => {
   await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
 });
 
-test('prev/next moves between entries', async () => {
+test('prev/next follow the timeline: Previous is older, Next is newer', async () => {
+  // Equitable is the most recent role, so it has no Next, and Previous is Relay.
   renderAt('/experience/equitable');
   await screen.findByRole('dialog', { name: 'Intermediate Business Systems Analyst' });
-  expect(screen.queryByRole('link', { name: /Previous/ })).not.toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: /^Next/ })).not.toBeInTheDocument();
 
-  fireEvent.click(screen.getByRole('link', { name: /Next.*Relay Financial Technologies/ }));
+  fireEvent.click(screen.getByRole('link', { name: /Previous.*Relay Financial Technologies/ }));
   expect(await screen.findByRole('dialog', { name: 'Software Engineering Intern (Full Stack)' })).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: /Previous.*Equitable Life of Canada/ })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /Next.*Equitable Life of Canada/ })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /Previous.*Shoplogix/ })).toBeInTheDocument();
+});
+
+test('project prev/next keep list order', async () => {
+  renderAt('/projects/web-development');
+  await screen.findByRole('dialog', { name: 'Web Development' });
+  expect(screen.queryByRole('link', { name: /^Previous/ })).not.toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /Next.*1Point Loyalty Platform/ })).toBeInTheDocument();
 });
 
 test('an unknown detail id falls back to home', async () => {
@@ -149,13 +158,13 @@ test('typing effect shows the full text statically when reduced motion is prefer
   }
 });
 
-test('education pills open a popup with prev/next between schools', async () => {
+test('education pills open a popup; Previous is the older school, Next the newer', async () => {
   renderAt('/');
   fireEvent.click(screen.getByRole('link', { name: /University of Waterloo/ }));
   expect(await screen.findByRole('dialog', { name: 'University of Waterloo' })).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: /Previous.*Georgia Tech/ })).toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /Next.*Georgia Tech/ })).toBeInTheDocument();
 
-  fireEvent.click(screen.getByRole('link', { name: /Next.*SciTech North/ }));
+  fireEvent.click(screen.getByRole('link', { name: /Previous.*SciTech North/ }));
   expect(await screen.findByRole('dialog', { name: 'SciTech North Regional Program' })).toBeInTheDocument();
 
   fireEvent.click(screen.getByRole('button', { name: 'Close' }));
@@ -165,4 +174,28 @@ test('education pills open a popup with prev/next between schools', async () => 
 test('the photo shows the role', () => {
   renderAt('/');
   expect(screen.getByRole('region', { name: 'Introduction' })).toHaveTextContent('Intermediate Business Systems Analyst');
+});
+
+test('the brand glow follows the mouse on experience popups and fades on leave', async () => {
+  renderAt('/experience/relay');
+  await screen.findByRole('dialog', { name: 'Software Engineering Intern (Full Stack)' });
+  const sheet = document.querySelector('.detail-paper') as HTMLElement;
+  const glow = document.querySelector('.detail-follow-glow') as HTMLElement;
+  sheet.getBoundingClientRect = () => ({ left: 100, top: 50, width: 400, height: 200 } as DOMRect);
+
+  // jsdom has no PointerEvent, so send a MouseEvent (which carries coordinates) as 'pointermove'.
+  act(() => {
+    sheet.dispatchEvent(new MouseEvent('pointermove', { bubbles: true, clientX: 300, clientY: 150 }));
+  });
+  expect(glow).toHaveClass('is-active');
+  await waitFor(() => expect(glow.style.transform).toBe('translate3d(200.0px, 100.0px, 0)'));
+
+  fireEvent.pointerLeave(sheet);
+  expect(glow).not.toHaveClass('is-active');
+});
+
+test('project popups have no cursor glow', async () => {
+  renderAt('/projects/flickpick');
+  await screen.findByRole('dialog', { name: 'FlickPick Movie App' });
+  expect(document.querySelector('.detail-follow-glow')).toBeNull();
 });

@@ -9,6 +9,7 @@ import ehToZed from '../Components/Images/Experience/PreschoolCanada.jpeg';
 
 // From Aryan's resume. `summary` is the one-line result on each resume row;
 // `highlights` are the full resume points shown in the popup.
+// `brand` colors were sampled from each company's logo and theme its popup.
 // `stack` drives the skill filter, so names must match technologies.ts
 // (C#, JavaScript, TypeScript, Kotlin, React, React Native) to be highlighted.
 export const experience: Experience[] = [
@@ -28,6 +29,7 @@ export const experience: Experience[] = [
       'Leveraged Copilot to accelerate discovery sessions with stakeholders, triage requests and analyze SQL/C#/.NET system code',
     ],
     stack: ['OnBase', 'C#', '.NET', 'SQL', 'Copilot'],
+    brand: { primary: '#00A4AC' },
   },
   {
     id: 'relay',
@@ -45,6 +47,7 @@ export const experience: Experience[] = [
       'Coordinated software releases to production, managing builds and Jira tickets for efficient rollouts and fast post-launch triage',
     ],
     stack: ['React', 'TypeScript', 'AWS Lambda', 'Jest', 'Cypress', 'GitHub Actions', 'Cursor'],
+    brand: { primary: '#004822', secondary: '#D4E17B' },
   },
   {
     id: 'shoplogix',
@@ -61,6 +64,7 @@ export const experience: Experience[] = [
       'Optimized the manufacturing efficiency for clients by gathering insights using KPIs like OEE to improve production productivity',
     ],
     stack: ['C#', '.NET', 'React', 'PostgreSQL', 'Jest', 'NUnit', 'AWS CloudWatch'],
+    brand: { primary: '#03506E', secondary: '#F69A36' },
   },
   {
     id: 'rbc',
@@ -77,6 +81,7 @@ export const experience: Experience[] = [
       'Implemented core features affecting 2000 small business users on C# WPF application deployed using custom Jenkins pipeline',
     ],
     stack: ['C#', '.NET', 'Angular', 'TypeScript', 'SQL Server', 'WPF', 'Jenkins'],
+    brand: { primary: '#0050A5' },
   },
   {
     id: 'manulife',
@@ -93,6 +98,7 @@ export const experience: Experience[] = [
       "Worked through the Agile Software Development cycle, completing various Jira stories and supporting daily scrum's/retro's",
     ],
     stack: ['C#', '.NET', 'SQL Server', 'GitHub', 'TFS'],
+    brand: { primary: '#00A758' },
   },
   {
     id: 'estee-lauder',
@@ -108,6 +114,7 @@ export const experience: Experience[] = [
       'Led AR initiative through discovery sessions, prototyping design in Figma and automating workflows with Power Automate/BI',
     ],
     stack: ['C#', 'Unity', '.NET Core', 'SQL', 'Figma', 'Power Automate', 'Power BI'],
+    brand: { primary: '#1D3141' },
   },
   {
     id: 'eh-to-zed',
@@ -122,5 +129,6 @@ export const experience: Experience[] = [
       'Worked on an educational game to assist children with autism using C# scripts, Unity engine and Oculus Quest 2 VR device',
     ],
     stack: ['C#', 'Unity', 'Oculus Quest 2'],
+    brand: { primary: '#BF2030' },
   },
 ];

@@ -194,3 +194,350 @@
     height: 48px;
   }
 }
+
+/* ---------- Premium popup styling ----------
+   Quiet neutral surfaces, generous spacing and refined type. Brand color
+   (experience popups) appears only as an ambient glow, a hairline of light
+   along the top edge, and small accent labels. */
+.MuiDialog-root {
+  --sheet: #0f0f11;
+  --sheet-edge: rgba(255, 255, 255, 0.08);
+  --sheet-muted: rgba(255, 255, 255, 0.56);
+  --sheet-chip: rgba(255, 255, 255, 0.06);
+  --glow-strength: 26%;
+  /* Neutral defaults; experience popups override these with brand colors. */
+  --brand-primary: #8e8e93;
+  --brand-secondary: var(--brand-primary);
+  --brand-ink: rgba(255, 255, 255, 0.6);
+}
+:root[data-theme='light'] .MuiDialog-root {
+  --sheet: #fbfbfd;
+  --sheet-edge: rgba(0, 0, 0, 0.07);
+  --sheet-muted: rgba(0, 0, 0, 0.5);
+  --sheet-chip: rgba(0, 0, 0, 0.045);
+  --glow-strength: 14%;
+  --brand-ink: rgba(0, 0, 0, 0.5);
+}
+.MuiDialog-root.is-branded {
+  /* Accent text: the logo color, lightened on dark (second logo color when
+     there is one) and darkened on light, so it stays readable. */
+  --brand-ink: color-mix(in srgb, var(--brand-secondary) 55%, #fff);
+}
+:root[data-theme='light'] .MuiDialog-root.is-branded {
+  --brand-ink: color-mix(in srgb, var(--brand-primary) 75%, #000);
+}
+
+.MuiDialog-root .detail-backdrop {
+  background: rgba(0, 0, 0, 0.42);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+:root[data-theme='light'] .MuiDialog-root .detail-backdrop {
+  background: rgba(240, 240, 245, 0.45);
+}
+
+.MuiDialog-root .detail-paper {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--sheet-edge);
+  border-radius: 28px;
+  background:
+    radial-gradient(85% 55% at 50% -12%, color-mix(in srgb, var(--brand-primary) var(--glow-strength), transparent), transparent 72%),
+    var(--sheet);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.45), 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+:root[data-theme='light'] .MuiDialog-root .detail-paper {
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.14), 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+/* A hairline of light along the top edge, in the brand color. */
+.MuiDialog-root .detail-paper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--brand-ink), transparent);
+  opacity: 0.7;
+  pointer-events: none;
+}
+.MuiDialog-root .detail-paper.MuiDialog-paperFullScreen {
+  border: 0;
+  border-radius: 0;
+}
+
+.MuiDialog-root .detail-top {
+  padding: 34px 34px 6px;
+  border-bottom: 0;
+  background: none;
+}
+.MuiDialog-root .detail-heading {
+  gap: 18px;
+}
+.MuiDialog-root .detail-heading h2 {
+  font-size: clamp(1.4rem, 2.6vw, 1.85rem);
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  line-height: 1.15;
+  color: var(--card-title);
+}
+.MuiDialog-root .detail-meta {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  color: var(--sheet-muted);
+}
+.MuiDialog-root .detail-logo {
+  width: 56px;
+  height: 56px;
+  box-shadow: 0 0 0 1px var(--sheet-edge), 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+.MuiDialog-root .detail-icon-button {
+  padding: 7px;
+  background: var(--sheet-chip);
+  color: var(--card-fg);
+}
+.MuiDialog-root .detail-icon-button:hover {
+  background: color-mix(in srgb, var(--card-fg) 12%, transparent);
+}
+
+.MuiDialog-root .detail-body {
+  padding: 10px 34px 30px;
+  line-height: 1.65;
+}
+/* The one-line result reads as a short headline. */
+.MuiDialog-root .detail-body > p:first-child {
+  margin: 14px 0 6px;
+  padding: 0;
+  border: 0;
+  font-size: 1.12rem;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: var(--card-title);
+}
+.MuiDialog-root .detail-section h3 {
+  margin: 26px 0 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--brand-ink);
+}
+.MuiDialog-root .detail-list {
+  padding-left: 1.1em;
+  color: color-mix(in srgb, var(--card-fg) 86%, transparent);
+}
+.MuiDialog-root .detail-list li + li {
+  margin-top: 6px;
+}
+.MuiDialog-root .detail-list li::marker {
+  color: var(--brand-ink);
+}
+.MuiDialog-root .detail-chips li {
+  padding: 5px 13px;
+  background: var(--sheet-chip);
+  color: var(--card-fg);
+  box-shadow: inset 0 0 0 1px var(--sheet-edge);
+  font-size: 0.85rem;
+}
+
+.MuiDialog-root .detail-nav {
+  padding: 14px 26px 18px;
+  border-top: 1px solid var(--sheet-edge);
+}
+.MuiDialog-root .detail-nav-link:hover {
+  background: var(--sheet-chip);
+}
+.MuiDialog-root .detail-nav-hint {
+  color: var(--sheet-muted);
+}
+.MuiDialog-root .detail-icon-button:focus-visible,
+.MuiDialog-root .detail-nav-link:focus-visible {
+  outline-color: var(--brand-ink);
+}
+
+@media (max-width: 640px) {
+  .MuiDialog-root .detail-top {
+    padding: 24px 20px 4px;
+  }
+  .MuiDialog-root .detail-body {
+    padding: 8px 20px 24px;
+  }
+  .MuiDialog-root .detail-nav {
+    padding: 12px 14px 16px;
+  }
+}
+
+/* ---------- Previous / next cards ---------- */
+
+.MuiDialog-root .detail-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 16px 22px 20px;
+}
+.MuiDialog-root .detail-nav-card {
+  --nav-brand: var(--brand-primary);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: none;
+  min-width: 0;
+  padding: 10px 14px;
+  border-radius: 18px;
+  background: var(--sheet-chip);
+  box-shadow: inset 0 0 0 1px var(--sheet-edge);
+  color: var(--card-fg);
+  text-decoration: none;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease, background 0.25s ease;
+}
+/* Next mirrors Previous: logo and text on the right, caret at the far edge. */
+.MuiDialog-root .detail-nav-card.is-next {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+.MuiDialog-root .detail-nav-card:hover {
+  transform: translateY(-2px);
+  background:
+    radial-gradient(120% 140% at 50% 120%, color-mix(in srgb, var(--nav-brand) 16%, transparent), transparent 70%),
+    var(--sheet-chip);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--nav-brand) 40%, var(--sheet-edge)),
+    0 10px 28px rgba(0, 0, 0, 0.22);
+}
+.MuiDialog-root .detail-nav-card:active {
+  transform: scale(0.98);
+}
+
+.detail-nav-caret {
+  flex-shrink: 0;
+  opacity: 0.45;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s ease;
+}
+.detail-nav-card.is-prev:hover .detail-nav-caret {
+  transform: translateX(-3px);
+  opacity: 0.9;
+}
+.detail-nav-card.is-next:hover .detail-nav-caret {
+  transform: translateX(3px);
+  opacity: 0.9;
+}
+
+.detail-nav-thumb {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--sheet-chip);
+  box-shadow: 0 0 0 1px var(--sheet-edge);
+  color: var(--card-fg);
+}
+.detail-nav-thumb > img,
+.detail-nav-thumb > .education-badge {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+.detail-nav-thumb > .education-badge {
+  object-fit: contain;
+}
+
+.detail-nav-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.25;
+}
+.MuiDialog-root .detail-nav-hint {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.detail-nav-name {
+  overflow: hidden;
+  font-size: 0.92rem;
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 640px) {
+  .MuiDialog-root .detail-nav {
+    gap: 8px;
+    padding: 12px 12px 16px;
+  }
+  .MuiDialog-root .detail-nav-card {
+    gap: 8px;
+    padding: 8px 10px;
+  }
+  .detail-nav-thumb {
+    width: 32px;
+    height: 32px;
+  }
+  .detail-nav-caret {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .MuiDialog-root .detail-nav-card,
+  .detail-nav-caret {
+    transition: none;
+  }
+  .MuiDialog-root .detail-nav-card:hover,
+  .MuiDialog-root .detail-nav-card:active,
+  .detail-nav-card:hover .detail-nav-caret {
+    transform: none;
+  }
+}
+
+/* ---------- Cursor-following brand glow (experience popups) ----------
+   A separate soft disc moved only with transform by useGlowFollow, so the
+   sheet never repaints while it moves. The sheet's static top glow stays
+   underneath; this one fades in while the mouse is over the popup. */
+.MuiDialog-root.is-branded {
+  --follow-strength: 34%;
+}
+:root[data-theme='light'] .MuiDialog-root.is-branded {
+  --follow-strength: 18%;
+}
+.detail-follow-glow {
+  --size: 560px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  width: var(--size);
+  height: var(--size);
+  margin: calc(var(--size) / -2) 0 0 calc(var(--size) / -2);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--brand-primary) var(--follow-strength), transparent) 0%,
+    transparent 65%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  will-change: transform, opacity;
+}
+.detail-follow-glow.is-active {
+  opacity: 1;
+}
+/* Content sits above the glow. */
+.MuiDialog-root.is-branded .detail-top,
+.MuiDialog-root.is-branded .detail-body,
+.MuiDialog-root.is-branded .detail-nav {
+  position: relative;
+  z-index: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .detail-follow-glow {
+    display: none;
+  }
+}

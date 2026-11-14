@@ -1,0 +1,95 @@
+/* ---------- Northern lights ----------
+   Each company gets one curtain of light: a long curved ribbon, brightest
+   along its lower edge and fading upward. Curtains sway, drift sideways and
+   slowly brighten and dim, each on its own timing. Only transform and
+   opacity animate, so it stays smooth. */
+
+.aurora {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  /* Curtains blend against the page colour, not against nothing. */
+  background: var(--page-bg);
+}
+
+/* Position, tilt and the slow sway/drift. */
+.aurora-glow {
+  --tint: color-mix(in srgb, color-mix(in srgb, var(--c) 68%, #fff) 78%, transparent);
+  position: absolute;
+  left: var(--left);
+  top: var(--top);
+  width: var(--w);
+  height: var(--h);
+  transform-origin: 50% 100%;
+  rotate: var(--tilt);
+  mix-blend-mode: screen;
+  animation: aurora-sway var(--dur) ease-in-out var(--delay) infinite alternate;
+  will-change: transform;
+}
+
+/* The curtain of light: a long curved ribbon (the top of a wide ellipse)
+   with a crisp lower edge that fades upward into the sky, and soft ends. */
+.aurora-curtain {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: radial-gradient(
+    ellipse 70% 115% at 50% 118%,
+    transparent 50%,
+    var(--tint) 57%,
+    color-mix(in srgb, var(--tint) 60%, transparent) 64%,
+    color-mix(in srgb, var(--tint) 22%, transparent) 76%,
+    transparent 90%
+  );
+  /* Soft ends on all four sides, so no box edge ever shows. */
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%),
+    linear-gradient(to top, transparent 0%, #000 18%, #000 62%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0%, #000 22%, #000 78%, transparent 100%),
+    linear-gradient(to top, transparent 0%, #000 18%, #000 62%, transparent 100%);
+  mask-composite: intersect;
+  animation:
+    aurora-breathe var(--breathe) ease-in-out var(--delay) infinite alternate,
+    aurora-flow var(--flow) ease-in-out var(--delay) infinite alternate;
+  will-change: opacity, transform;
+}
+
+/* Light theme: soft pastel curtains that tint the off-white page. */
+:root[data-theme='light'] .aurora-glow {
+  --tint: color-mix(in srgb, var(--c) 30%, transparent);
+  mix-blend-mode: multiply;
+}
+
+@keyframes aurora-sway {
+  0% {
+    transform: translate3d(0, 0, 0) skewX(var(--skew1)) scaleY(1);
+  }
+  50% {
+    transform: translate3d(var(--drift), -7vh, 0) skewX(var(--skew2)) scaleY(1.35);
+  }
+  100% {
+    transform: translate3d(calc(var(--drift) * -0.8), 5vh, 0) skewX(var(--skew1)) scaleY(0.78);
+  }
+}
+
+@keyframes aurora-breathe {
+  0% { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+@keyframes aurora-flow {
+  from { transform: translate3d(calc(var(--flow-x) * -1), 0, 0); }
+  to { transform: translate3d(var(--flow-x), 0, 0); }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-glow,
+  .aurora-curtain {
+    animation: none;
+  }
+}

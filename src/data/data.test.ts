@@ -43,3 +43,12 @@ test('every skill has exactly one kind of logo', () => {
     expect([tech.name, kinds.length]).toEqual([tech.name, 1]);
   });
 });
+
+test('every role has brand colors for its popup', async () => {
+  const { experience } = await import('./experience');
+  const hex = /^#[0-9A-F]{6}$/i;
+  experience.forEach((job) => {
+    expect([job.id, hex.test(job.brand.primary)]).toEqual([job.id, true]);
+    if (job.brand.secondary) expect(job.brand.secondary).toMatch(hex);
+  });
+});
