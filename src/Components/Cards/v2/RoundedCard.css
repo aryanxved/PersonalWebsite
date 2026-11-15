@@ -1,0 +1,193 @@
+/* Bento tile */
+.rounded-card {
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  min-height: 0;
+  border-radius: 28px;
+  background: var(--card-shell-bg);
+  color: var(--card-fg);
+  box-shadow: var(--card-shell-shadow), inset 0 0 0 1px var(--hairline);
+  text-align: left;
+  transition: box-shadow 0.3s ease;
+}
+
+.rounded-card-glow:hover {
+  box-shadow: var(--card-glow), inset 0 0 0 1px var(--hairline);
+}
+
+.card-content {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: clamp(20px, 3vh, 32px) clamp(22px, 2vw, 34px);
+  background-color: var(--card-bg);
+  color: var(--card-fg);
+}
+
+/* Lists inside a tile take the remaining height and scroll only if a screen is very short. */
+.card-content > ul,
+.card-content > .technology-grid {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  margin-top: clamp(10px, 1.8vh, 18px);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.card-text {
+  margin: 0;
+  color: var(--card-title);
+  font-size: clamp(1.75rem, 4.2vh, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.card-external-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--pill-bg);
+  color: var(--card-title);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.card-external-link:hover {
+  transform: translate(1px, -1px);
+  background: var(--pill-hover-bg);
+}
+.card-external-link:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+@media (min-width: 1041px) and (max-height: 860px) {
+  .card-sub-text.card-sub-text {
+    font-size: 0.82rem;
+  }
+}
+
+.card-sub-text {
+  margin-top: 6px;
+  color: var(--card-subtext);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Photo tiles: the image fills the whole tile. */
+.photo-card .card-content {
+  padding: 0;
+}
+.profile-picture-full {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  display: block;
+}
+
+@media (max-width: 1040px) {
+  .rounded-card {
+    border-radius: 24px;
+  }
+  .card-content {
+    padding: 20px;
+  }
+  .card-content > ul,
+  .card-content > .technology-grid {
+    overflow: visible;
+  }
+  .card-text {
+    font-size: 2rem;
+  }
+  /* Always the full column width. Height follows a 4:5 portrait on phones
+     (column = viewport - 32px gutters) but is capped at 70% of the screen on
+     tablets; the photo crops to fill instead of the tile shrinking sideways. */
+  .hero-card {
+    width: 100%;
+    height: min(calc((100vw - 32px) * 1.25), 70vh);
+  }
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-external-link {
+    transition: none;
+  }
+  .card-external-link:hover {
+    transform: none;
+  }
+}
+
+/* ---------- Light theme: frosted glass tiles ----------
+   The tile is a sheet of milky glass over the aurora, with a bright rim and
+   a soft highlight across the top. There is deliberately no backdrop-filter:
+   the aurora behind is already soft, and re-blurring it under every tile on
+   every animation frame was the main cause of jank.
+   Pills and chips inside become lighter panes of the same glass. */
+:root[data-theme='light'] .rounded-card {
+  --pill-bg: rgba(255, 255, 255, 0.86);
+  --pill-hover-bg: #fff;
+  --card-subtext: #3c3c43;
+  --hairline: rgba(255, 255, 255, 0.7);
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.88) 0%,
+    rgba(255, 255, 255, 0.68) 45%,
+    rgba(255, 255, 255, 0.76) 100%
+  );
+  /* A faint dark outline plus a deep, layered shadow lift the tile off the page. */
+  box-shadow:
+    0 0 0 1px rgba(30, 40, 70, 0.1),
+    0 30px 60px -22px rgba(30, 40, 70, 0.38),
+    0 10px 22px -10px rgba(30, 40, 70, 0.16),
+    0 2px 4px rgba(30, 40, 70, 0.06),
+    inset 0 1px 0 #fff,
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+}
+
+:root[data-theme='light'] .rounded-card .card-content {
+  background-color: transparent;
+}
+
+/* Hover keeps the glass look: the tile lifts and its rim brightens. */
+:root[data-theme='light'] .rounded-card-glow:hover {
+  box-shadow:
+    0 0 0 1px rgba(30, 40, 70, 0.09),
+    0 40px 72px -22px rgba(30, 40, 70, 0.46),
+    0 12px 26px -10px rgba(30, 40, 70, 0.2),
+    0 2px 4px rgba(30, 40, 70, 0.06),
+    inset 0 1px 0 #fff,
+    inset 0 0 0 1px rgba(255, 255, 255, 0.95);
+}
+
+/* The scrolling lists clip anything outside their box, which cut off the
+   pills' outlines and drop shadows. Give each list a gutter for the shadows
+   and pull it back out with equal negative margins, so the pills stay the
+   same size and in the same place. */
+@media (min-width: 1041px) {
+  .rounded-card .card-content > ul,
+  .rounded-card .card-content > .technology-grid {
+    padding: 4px 14px 22px;
+    margin-inline: -14px;
+    margin-bottom: -22px;
+    margin-top: calc(clamp(10px, 1.8vh, 18px) - 4px);
+  }
+}

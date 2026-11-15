@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#0a0a0c" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#e6e9f0" media="(prefers-color-scheme: light)" />
     <meta
       name="description"
       content="Aryan Ved's Personal Website"
@@ -25,10 +26,178 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Aryan Ved</title>
+    <script>
+      // Apply the saved or device theme before React loads, to avoid a flash.
+      try {
+        var t = localStorage.getItem('theme');
+        if (t !== 'light' && t !== 'dark') {
+          t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+    <script>
+      // Show the sliding-door preloader only when JavaScript can open it again.
+      document.documentElement.classList.add('is-preloading');
+    </script>
+    <style>
+      /* ---------- Sliding-door preloader ---------- */
+      #preloader {
+        display: none;
+      }
+      .is-preloading body {
+        overflow: hidden;
+      }
+      .is-preloading #preloader,
+      #preloader.is-open {
+        --door: #0e0e10;
+        --door-edge: rgba(255, 255, 255, 0.06);
+        --ink: #ffffff;
+        --seam: #7cb7ff;
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+        display: flex;
+        pointer-events: auto;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+      }
+      html[data-theme='light'] #preloader {
+        --door: #f3f3f5;
+        --door-edge: rgba(0, 0, 0, 0.06);
+        --ink: #111111;
+        --seam: #0b57d0;
+      }
+      #preloader .door {
+        position: relative;
+        flex: 1 1 50%;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        background: var(--door);
+        transition: transform 1.05s cubic-bezier(0.77, 0, 0.18, 1);
+        will-change: transform;
+      }
+      #preloader .door-left {
+        justify-content: flex-end;
+        box-shadow: inset -1px 0 0 var(--door-edge);
+      }
+      #preloader .door-right {
+        justify-content: flex-start;
+        box-shadow: inset 1px 0 0 var(--door-edge);
+      }
+      #preloader .door-word {
+        color: var(--ink);
+        font-size: clamp(2rem, 7vw, 5.5rem);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1;
+        padding: 0 clamp(10px, 1.6vw, 22px);
+        opacity: 0;
+        animation: door-word-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+      }
+      #preloader .door-left .door-word {
+        --from: -24px;
+      }
+      #preloader .door-right .door-word {
+        --from: 24px;
+        font-weight: 300;
+      }
+      #preloader .seam {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 2px;
+        height: 34vh;
+        margin: -17vh 0 0 -1px;
+        border-radius: 2px;
+        background: linear-gradient(to bottom, transparent, var(--seam), transparent);
+        box-shadow: 0 0 18px var(--seam);
+        transform: scaleY(0);
+        animation: seam-grow 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        transition: opacity 0.25s ease;
+      }
+      /* Open: the doors slide apart, carrying the name with them. */
+      #preloader.is-open .door-left {
+        transform: translateX(-101%);
+      }
+      #preloader.is-open .door-right {
+        transform: translateX(101%);
+      }
+      #preloader.is-open .seam {
+        opacity: 0;
+      }
+      #preloader.is-open {
+        pointer-events: none;
+      }
+      @keyframes door-word-in {
+        from { opacity: 0; transform: translateX(var(--from)); }
+        to { opacity: 1; transform: none; }
+      }
+      @keyframes seam-grow {
+        to { transform: scaleY(1); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #preloader .door-word,
+        #preloader .seam {
+          animation: none;
+          opacity: 1;
+          transform: none;
+        }
+        #preloader .door {
+          transition: opacity 0.3s ease;
+        }
+        #preloader.is-open .door-left,
+        #preloader.is-open .door-right {
+          transform: none;
+          opacity: 0;
+        }
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="preloader" aria-hidden="true">
+      <div class="door door-left"><span class="door-word">Aryan</span></div>
+      <div class="door door-right"><span class="door-word">Ved</span></div>
+      <span class="seam"></span>
+    </div>
     <div id="root"></div>
+    <script>
+      // Open the doors once the page (scripts, styles, images) has loaded,
+      // after a short minimum so the intro can play, and never later than 5s.
+      (function () {
+        var MIN_MS = 1200;
+        var MAX_MS = 5000;
+        var start = Date.now();
+        var opened = false;
+        var root = document.documentElement;
+        var preloader = document.getElementById('preloader');
+        if (!preloader) return;
+
+        function open() {
+          if (opened) return;
+          opened = true;
+          preloader.classList.add('is-open');
+          root.classList.remove('is-preloading');
+          // Remove after the doors finish sliding (or right away if nothing animates).
+          var done = function () {
+            if (preloader.parentNode) preloader.parentNode.removeChild(preloader);
+          };
+          preloader.addEventListener('transitionend', function (event) {
+            if (event.target.classList && event.target.classList.contains('door-right')) done();
+          });
+          setTimeout(done, 1500);
+        }
+
+        function openAfterMinimum() {
+          setTimeout(open, Math.max(0, MIN_MS - (Date.now() - start)));
+        }
+
+        if (document.readyState === 'complete') openAfterMinimum();
+        else window.addEventListener('load', openAfterMinimum);
+        setTimeout(open, MAX_MS);
+      })();
+    </script>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

@@ -1,0 +1,32 @@
+/* Both layers sit in the same grid cell: the hidden sizer holds the space
+   of the longest phrase, the live layer types on top of it. */
+.typing-line {
+  position: relative;
+  display: grid;
+}
+.typing-layer {
+  grid-area: 1 / 1;
+}
+.typing-sizer {
+  visibility: hidden;
+}
+
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: -0.18em;
+  border-radius: 1px;
+  background: currentColor;
+  animation: typing-blink 1.06s steps(1, end) infinite;
+}
+/* Solid while characters are moving; blink only while resting. */
+.typing-cursor.is-moving {
+  animation: none;
+}
+
+@keyframes typing-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
